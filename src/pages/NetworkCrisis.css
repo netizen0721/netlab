@@ -1,0 +1,790 @@
+.network-crisis-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at 15% 10%,
+      rgba(124, 58, 237, 0.2),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 85% 75%,
+      rgba(168, 85, 247, 0.14),
+      transparent 30%
+    ),
+    linear-gradient(135deg, #050507 0%, #10091f 50%, #07050d 100%);
+  color: #ffffff;
+  padding-bottom: 60px;
+  overflow-x: hidden;
+}
+
+.network-crisis-background-glow {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  opacity: 0.15;
+}
+
+.network-crisis-glow-one {
+  top: 10%;
+  left: -100px;
+  background: #7c3aed;
+}
+
+.network-crisis-glow-two {
+  right: -100px;
+  bottom: 10%;
+  background: #a855f7;
+}
+
+.network-crisis-header {
+  border-bottom: 1px solid rgba(168, 85, 247, 0.18);
+  background: rgba(5, 5, 10, 0.72);
+  backdrop-filter: blur(18px);
+}
+
+.network-crisis-header-inner {
+  width: min(1120px, calc(100% - 40px));
+  margin: auto;
+  padding: 28px 0 42px;
+}
+
+.network-crisis-challenge-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 13px;
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  border-radius: 999px;
+  background: rgba(124, 58, 237, 0.1);
+  color: #c4b5fd;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.network-crisis-header-title {
+  margin-top: 22px;
+  text-align: left;
+}
+
+.network-crisis-header-title p {
+  margin: 0 0 8px;
+  color: #a855f7;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 3px;
+}
+
+.network-crisis-header-title h1 {
+  margin: 0;
+  font-size: clamp(32px, 5vw, 54px);
+  line-height: 1;
+  letter-spacing: 2px;
+  font-weight: 900;
+}
+
+.network-crisis-header-title h1 span {
+  color: #a855f7;
+}
+
+.network-crisis-header-title > span {
+  display: block;
+  max-width: 680px;
+  margin-top: 15px;
+  color: #aaa3b8;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.network-crisis-content {
+  width: min(1120px, calc(100% - 40px));
+  margin: 34px auto 0;
+}
+
+.network-crisis-case-card {
+  padding: 28px;
+  border: 1px solid rgba(168, 85, 247, 0.22);
+  border-radius: 18px;
+  background: rgba(17, 11, 30, 0.78);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+}
+
+.network-crisis-case-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  color: #8d839d;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.network-crisis-case-status {
+  color: #fca5a5;
+}
+
+.network-crisis-case-card h2 {
+  margin: 0 0 10px;
+  font-size: 25px;
+}
+
+.network-crisis-case-card > p {
+  max-width: 850px;
+  margin: 0;
+  color: #aaa3b8;
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+.network-crisis-case-details {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.network-crisis-case-details div {
+  padding: 15px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.network-crisis-case-details span {
+  display: block;
+  color: #777080;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin-bottom: 7px;
+}
+
+.network-crisis-case-details strong {
+  color: #ddd6fe;
+  font-size: 13px;
+}
+
+.network-crisis-stage-section {
+  margin-top: 25px;
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  border-radius: 18px;
+  background: rgba(10, 7, 17, 0.82);
+  overflow: hidden;
+}
+
+.network-crisis-stage-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  padding: 23px 28px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.network-crisis-stage-header p,
+.network-crisis-panel-label {
+  margin: 0 0 6px;
+  color: #a855f7;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.network-crisis-stage-header h2 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.network-crisis-stage-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.network-crisis-stage-indicator span {
+  width: 27px;
+  height: 27px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  color: #625b6c;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.network-crisis-stage-indicator span.active,
+.network-crisis-stage-indicator span.done {
+  background: #7c3aed;
+  color: #ffffff;
+}
+
+.network-crisis-stage-indicator i {
+  width: 18px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.network-crisis-briefing-panel,
+.network-crisis-investigation-panel,
+.network-crisis-choice-panel,
+.network-crisis-verification-panel,
+.network-crisis-complete-panel {
+  padding: 35px;
+}
+
+.network-crisis-briefing-panel {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 25px;
+}
+
+.network-crisis-briefing-icon {
+  width: 75px;
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  background: rgba(124, 58, 237, 0.12);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  font-size: 34px;
+}
+
+.network-crisis-briefing-content h3,
+.network-crisis-choice-panel h3,
+.network-crisis-verification-panel h3,
+.network-crisis-complete-panel h3 {
+  margin: 0 0 10px;
+  font-size: 22px;
+}
+
+.network-crisis-briefing-content > p:not(.network-crisis-panel-label),
+.network-crisis-question-description,
+.network-crisis-verification-panel > p:not(.network-crisis-panel-label),
+.network-crisis-complete-panel > p:not(.network-crisis-panel-label) {
+  color: #a9a2b2;
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+.network-crisis-briefing-rules {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 25px 0;
+}
+
+.network-crisis-briefing-rules div {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 13px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.025);
+  border-radius: 10px;
+}
+
+.network-crisis-briefing-rules span {
+  color: #a855f7;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.network-crisis-briefing-rules p {
+  margin: 0;
+  color: #bbb4c5;
+  font-size: 12px;
+}
+
+.network-crisis-primary-button,
+.network-crisis-secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 43px;
+  padding: 13px 19px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.network-crisis-primary-button {
+  border: 0;
+  background: linear-gradient(135deg, #7c3aed, #9333ea);
+  color: #ffffff;
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.22);
+  text-decoration: none;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.network-crisis-primary-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(124, 58, 237, 0.34);
+}
+
+.network-crisis-secondary-button {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: #d8d1df;
+}
+
+.network-crisis-secondary-button:hover {
+  background: rgba(255, 255, 255, 0.09);
+  transform: translateY(-2px);
+}
+
+.network-crisis-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.network-crisis-panel-heading h3 {
+  margin: 0;
+}
+
+.network-crisis-live-status {
+  padding: 7px 10px;
+  border-radius: 7px;
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  color: #86efac;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.network-crisis-clues-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.network-crisis-clues-heading h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.network-crisis-clues-heading > span {
+  color: #9d91a9;
+  font-size: 11px;
+}
+
+.network-crisis-clues-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.network-crisis-clue-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  width: 100%;
+  padding: 17px;
+  text-align: left;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.025);
+  color: #ffffff;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.network-crisis-clue-card:hover {
+  border-color: rgba(168, 85, 247, 0.4);
+  transform: translateY(-2px);
+}
+
+.network-crisis-clue-card.selected {
+  border-color: rgba(168, 85, 247, 0.7);
+  background: rgba(124, 58, 237, 0.1);
+}
+
+.network-crisis-clue-icon {
+  font-size: 23px;
+}
+
+.network-crisis-clue-card strong {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 13px;
+}
+
+.network-crisis-clue-card p {
+  margin: 0;
+  color: #97909f;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.network-crisis-clue-check {
+  position: absolute;
+  right: 13px;
+  top: 13px;
+  color: #c4b5fd;
+  font-weight: 900;
+}
+
+.network-crisis-feedback {
+  padding: 12px 15px;
+  margin: 15px 0;
+  border-radius: 9px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.network-crisis-feedback.warning {
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  background: rgba(245, 158, 11, 0.07);
+  color: #fcd34d;
+}
+
+.network-crisis-feedback.success {
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  background: rgba(34, 197, 94, 0.07);
+  color: #86efac;
+}
+
+.network-crisis-option-list {
+  display: grid;
+  gap: 12px;
+  margin: 25px 0;
+}
+
+.network-crisis-option-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 17px;
+  text-align: left;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.025);
+  color: #ffffff;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.network-crisis-option-card:hover {
+  border-color: rgba(168, 85, 247, 0.4);
+}
+
+.network-crisis-option-card.selected {
+  border-color: rgba(168, 85, 247, 0.7);
+  background: rgba(124, 58, 237, 0.11);
+}
+
+.network-crisis-option-number {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(124, 58, 237, 0.1);
+  color: #a78bfa;
+  font-size: 13px;
+}
+
+.network-crisis-option-card strong {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 13px;
+}
+
+.network-crisis-option-card p {
+  margin: 0;
+  color: #97909f;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.network-crisis-action-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.network-crisis-action-row .network-crisis-primary-button,
+.network-crisis-action-row .network-crisis-secondary-button {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.network-crisis-verification-panel,
+.network-crisis-complete-panel {
+  text-align: center;
+}
+
+.network-crisis-verification-icon,
+.network-crisis-complete-icon {
+  width: 75px;
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: rgba(124, 58, 237, 0.12);
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  font-size: 31px;
+}
+
+.network-crisis-complete-icon {
+  background: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.3);
+  color: #86efac;
+}
+
+.network-crisis-verification-list {
+  display: grid;
+  gap: 10px;
+  margin: 25px 0;
+  text-align: left;
+}
+
+.network-crisis-verification-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  padding: 15px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.025);
+  color: #ffffff;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.network-crisis-verification-item:hover {
+  border-color: rgba(168, 85, 247, 0.4);
+}
+
+.network-crisis-verification-item.selected {
+  border-color: rgba(34, 197, 94, 0.35);
+  background: rgba(34, 197, 94, 0.05);
+}
+
+.network-crisis-verification-check {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(124, 58, 237, 0.1);
+  color: #a78bfa;
+  font-size: 13px;
+}
+
+.network-crisis-verification-item.selected
+  .network-crisis-verification-check {
+  background: rgba(34, 197, 94, 0.12);
+  color: #86efac;
+}
+
+.network-crisis-verification-item strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+.network-crisis-verification-item p {
+  margin: 0;
+  color: #97909f;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.network-crisis-complete-summary {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 25px 0;
+  text-align: left;
+}
+
+.network-crisis-complete-summary div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border: 1px solid rgba(34, 197, 94, 0.15);
+  border-radius: 10px;
+  background: rgba(34, 197, 94, 0.035);
+}
+
+.network-crisis-complete-summary span {
+  color: #aaa3b2;
+  font-size: 11px;
+}
+
+.network-crisis-complete-summary strong {
+  color: #86efac;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.network-crisis-complete-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 25px;
+}
+
+.network-crisis-complete-actions .network-crisis-primary-button {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.network-crisis-bottom-navigation {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.network-crisis-nav-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 10px 16px;
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  border-radius: 10px;
+  background: rgba(30, 20, 65, 0.75);
+  color: #ffffff;
+  text-decoration: none;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.network-crisis-nav-button:hover {
+  background: #7c3aed;
+  border-color: #a855f7;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 800px) {
+  .network-crisis-stage-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .network-crisis-stage-indicator {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .network-crisis-stage-indicator i {
+    flex: 1;
+  }
+
+  .network-crisis-case-details {
+    grid-template-columns: 1fr;
+  }
+
+  .network-crisis-briefing-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .network-crisis-clues-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .network-crisis-complete-summary {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .network-crisis-header-inner,
+  .network-crisis-content {
+    width: min(100% - 24px, 1120px);
+  }
+
+  .network-crisis-header-title h1 {
+    font-size: 34px;
+  }
+
+  .network-crisis-case-card,
+  .network-crisis-briefing-panel,
+  .network-crisis-investigation-panel,
+  .network-crisis-choice-panel,
+  .network-crisis-verification-panel,
+  .network-crisis-complete-panel {
+    padding: 22px;
+  }
+
+  .network-crisis-briefing-rules {
+    grid-template-columns: 1fr;
+  }
+
+  .network-crisis-bottom-navigation {
+    justify-content: flex-start;
+    gap: 10px;
+  }
+
+  .network-crisis-nav-button {
+    width: auto;
+    min-height: 42px;
+    padding: 10px 12px;
+    font-size: 11px;
+  }
+
+  .network-crisis-action-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .network-crisis-action-row .network-crisis-primary-button,
+  .network-crisis-action-row .network-crisis-secondary-button {
+    width: 100%;
+  }
+}
+/* FIX TOMBOL INVESTIGASI KE KANAN */
+
+.network-crisis-briefing-content .network-crisis-primary-button,
+.network-crisis-investigation-panel > .network-crisis-primary-button,
+.network-crisis-choice-panel > .network-crisis-primary-button,
+.network-crisis-verification-panel > .network-crisis-primary-button {
+  display: flex !important;
+  width: fit-content !important;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  align-self: flex-end !important;
+}

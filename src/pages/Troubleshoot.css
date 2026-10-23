@@ -1,0 +1,802 @@
+.materi-detail-page {
+  min-height: 100vh;
+  padding: 32px 6%;
+  box-sizing: border-box;
+  color: #ffffff;
+
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(112, 62, 190, 0.18),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 90% 20%,
+      rgba(65, 90, 180, 0.12),
+      transparent 25%
+    ),
+    linear-gradient(
+      135deg,
+      #08080d 0%,
+      #110b1d 50%,
+      #08080d 100%
+    );
+}
+
+/* HEADER */
+
+.materi-detail-header {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 50px;
+  text-align: left;
+}
+
+.materi-back-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 44px;
+  padding: 0 18px;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+
+  color: #d8d0e8;
+  background: rgba(255, 255, 255, 0.035);
+
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+
+  transition: 0.2s ease;
+}
+
+.materi-back-button:hover {
+  color: #ffffff;
+  border-color: rgba(170, 135, 245, 0.35);
+  background: rgba(140, 100, 220, 0.1);
+  transform: translateX(-3px);
+}
+
+.materi-detail-label {
+  margin: 30px 0 12px;
+
+  color: #a98be8;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.materi-detail-header h1 {
+  margin: 0 0 14px;
+
+  color: #ffffff;
+  font-size: 42px;
+  line-height: 1.15;
+  font-weight: 800;
+  text-align: left;
+}
+
+.materi-detail-header > p {
+  max-width: 780px;
+  margin: 0;
+
+  color: #aaa2b8;
+  font-size: 16px;
+  line-height: 1.8;
+  text-align: left;
+}
+
+/* INTRO */
+
+.materi-intro-card {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 55px;
+  padding: 28px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.018)
+    );
+
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+}
+
+.materi-section-icon {
+  width: 50px;
+  height: 50px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background: rgba(125, 80, 195, 0.14);
+  border: 1px solid rgba(165, 120, 240, 0.2);
+
+  font-size: 22px;
+}
+
+.materi-intro-card h2 {
+  margin: 0 0 10px;
+
+  color: #ffffff;
+  font-size: 21px;
+  font-weight: 750;
+}
+
+.materi-intro-card p {
+  margin: 0 0 10px;
+
+  color: #aaa2b8;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.materi-intro-card p:last-child {
+  margin-bottom: 0;
+}
+
+.materi-intro-card strong {
+  color: #ffffff;
+}
+
+/* SECTION */
+
+.materi-content-section {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 55px;
+}
+
+.materi-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  margin-bottom: 24px;
+
+  text-align: left;
+}
+
+.materi-section-heading > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 42px;
+  height: 42px;
+
+  border-radius: 12px;
+
+  color: #ffffff;
+  background: rgba(130, 85, 205, 0.2);
+  border: 1px solid rgba(165, 120, 240, 0.25);
+
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.materi-section-heading h2 {
+  margin: 0;
+
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 750;
+}
+
+.materi-section-heading p {
+  margin: 5px 0 0;
+
+  color: #8f879d;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* GRID */
+
+.basic-learning-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+/* CARD */
+
+.basic-learning-card {
+  min-width: 0;
+  padding: 26px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.018)
+    );
+
+  transition: 0.25s ease;
+}
+
+.basic-learning-card:hover {
+  transform: translateY(-4px);
+
+  border-color: rgba(160, 120, 235, 0.3);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(130, 85, 205, 0.1),
+      rgba(255, 255, 255, 0.025)
+    );
+}
+
+.basic-learning-card h3 {
+  margin: 0 0 10px;
+
+  color: #ffffff;
+  font-size: 19px;
+  font-weight: 750;
+}
+
+.basic-learning-card p {
+  margin: 0;
+
+  color: #aaa2b8;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 18px;
+
+  border-radius: 14px;
+
+  background: rgba(125, 80, 195, 0.14);
+  border: 1px solid rgba(165, 120, 240, 0.2);
+
+  font-size: 22px;
+}
+
+.card-number {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 18px;
+
+  border-radius: 12px;
+
+  color: #ffffff;
+
+  background: rgba(125, 80, 195, 0.14);
+  border: 1px solid rgba(165, 120, 240, 0.2);
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* METODE TROUBLESHOOTING */
+
+.troubleshooting-step-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.troubleshooting-step-grid .basic-learning-card:last-child {
+  grid-column: span 2;
+}
+
+/* COMMAND */
+
+.command-card code {
+  display: inline-block;
+
+  margin-bottom: 15px;
+  padding: 8px 13px;
+
+  border-radius: 8px;
+
+  color: #d8c3ff;
+  background: rgba(120, 75, 190, 0.14);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+
+  font-family: "Courier New", monospace;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* TERMINAL */
+
+.terminal-example {
+  width: 100%;
+  margin-top: 24px;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+
+  background: #08080d;
+
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.22);
+}
+
+.terminal-header {
+  min-height: 46px;
+  padding: 0 18px;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.terminal-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.terminal-dots span {
+  width: 9px;
+  height: 9px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.terminal-title {
+  color: #8f879d;
+
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+}
+
+.terminal-body {
+  padding: 22px 24px;
+
+  font-family: "Courier New", monospace;
+}
+
+.terminal-body p {
+  margin: 0 0 10px;
+
+  color: #bcb4c9;
+  font-size: 13px;
+}
+
+.terminal-body p:last-child {
+  margin-bottom: 0;
+}
+
+.terminal-prompt {
+  color: #a98be8;
+  margin-right: 8px;
+}
+
+.terminal-success {
+  color: #8fd694;
+}
+
+/* TIP CARD */
+
+.materi-tip-card {
+  width: 100%;
+  max-width: 1200px;
+
+  margin: 0 auto 50px;
+  padding: 30px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+
+  border-radius: 18px;
+
+  border: 1px solid rgba(155, 115, 240, 0.18);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(120, 75, 190, 0.12),
+      rgba(255, 255, 255, 0.025)
+    );
+}
+
+.materi-tip-icon {
+  width: 50px;
+  height: 50px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background: rgba(125, 80, 195, 0.14);
+  border: 1px solid rgba(165, 120, 240, 0.2);
+
+  font-size: 22px;
+}
+
+.materi-tip-card span {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #a98be8;
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.materi-tip-card h2 {
+  margin: 0 0 10px;
+
+  color: #ffffff;
+  font-size: 23px;
+}
+
+.materi-tip-card p {
+  margin: 0;
+
+  color: #aaa2b8;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+/* BOTTOM NAVIGATION */
+
+.materi-navigation {
+  width: 100%;
+  max-width: 1200px;
+
+  margin: 0 auto;
+  padding-bottom: 30px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.materi-nav-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 46px;
+
+  padding: 0 20px;
+
+  border-radius: 12px;
+
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  transition: 0.2s ease;
+}
+
+.materi-nav-button.primary {
+  border: 1px solid rgba(155, 115, 240, 0.4);
+
+  color: #ffffff;
+
+  background: rgba(120, 75, 190, 0.28);
+}
+
+.materi-nav-button.primary:hover {
+  background: rgba(140, 90, 215, 0.4);
+  border-color: rgba(180, 145, 250, 0.55);
+
+  transform: translateY(-2px);
+}
+
+.materi-nav-button.secondary {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  color: #c9c1d3;
+
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.materi-nav-button.secondary:hover {
+  color: #ffffff;
+
+  border-color: rgba(170, 135, 245, 0.35);
+  background: rgba(140, 100, 220, 0.1);
+
+  transform: translateY(-2px);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  .basic-learning-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .troubleshooting-step-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .troubleshooting-step-grid .basic-learning-card:last-child {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 800px) {
+  .materi-detail-page {
+    padding: 25px 5%;
+  }
+
+  .materi-detail-header h1 {
+    font-size: 34px;
+  }
+
+  .materi-navigation {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .materi-nav-button {
+    width: 100%;
+  }
+
+  .materi-intro-card {
+    padding: 24px;
+  }
+
+  .materi-tip-card {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 500px) {
+  .materi-detail-page {
+    padding: 20px 4%;
+  }
+
+  .materi-detail-header h1 {
+    font-size: 29px;
+  }
+
+  .materi-detail-header > p {
+    font-size: 14px;
+  }
+
+  .materi-section-heading {
+    gap: 12px;
+  }
+
+  .materi-section-heading > span {
+    width: 38px;
+    height: 38px;
+  }
+
+  .materi-section-heading h2 {
+    font-size: 20px;
+  }
+
+  .materi-intro-card {
+    padding: 20px;
+    gap: 15px;
+  }
+
+  .materi-section-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .basic-learning-card {
+    padding: 20px;
+  }
+
+  .materi-tip-card {
+    padding: 20px;
+    gap: 15px;
+  }
+
+  .materi-tip-icon {
+    width: 44px;
+    height: 44px;
+  }
+}
+/* =========================================
+   TROUBLESHOOT NAVIGATION
+   ========================================= */
+
+.troubleshoot-navigation {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 0;
+  padding-bottom: 40px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 18px;
+}
+
+.troubleshoot-download-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+}
+
+.troubleshoot-download-wrapper .materi-download-button {
+  min-width: 190px;
+  text-align: center;
+}
+
+.troubleshoot-navigation-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.troubleshoot-navigation-row .materi-nav-button {
+  min-width: 220px;
+}
+
+.troubleshoot-navigation-row .materi-nav-button.secondary {
+  margin-right: auto;
+}
+
+.troubleshoot-navigation-row .materi-nav-button.primary {
+  margin-left: auto;
+}
+
+/* EFEK UNGU HALUS */
+
+.troubleshoot-navigation .materi-nav-button,
+.troubleshoot-navigation .materi-download-button {
+  border: 1px solid rgba(167, 139, 250, 0.45);
+  box-shadow: 0 0 6px rgba(139, 92, 246, 0.18);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.troubleshoot-navigation .materi-nav-button:hover,
+.troubleshoot-navigation .materi-download-button:hover {
+  border-color: rgba(196, 181, 253, 0.85);
+  box-shadow:
+    0 0 7px rgba(167, 139, 250, 0.45),
+    0 0 14px rgba(124, 58, 237, 0.25);
+  transform: translateY(-2px);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 600px) {
+  .troubleshoot-navigation-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .troubleshoot-navigation-row .materi-nav-button,
+  .troubleshoot-download-wrapper .materi-download-button {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  .troubleshoot-navigation-row .materi-nav-button.secondary,
+  .troubleshoot-navigation-row .materi-nav-button.primary {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+/* =========================================
+   FIX DOWNLOAD TROUBLESHOOT
+   ========================================= */
+
+.troubleshoot-navigation {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  margin-top: 80px !important;
+  padding: 0 0 50px 0 !important;
+  box-sizing: border-box !important;
+}
+
+.troubleshoot-download-wrapper {
+  position: relative !important;
+  order: 1 !important;
+  display: flex !important;
+  justify-content: center !important;
+  width: 100% !important;
+  margin: 0 0 22px 0 !important;
+  padding: 0 !important;
+}
+
+.troubleshoot-download-wrapper .materi-download-button {
+  position: relative !important;
+  top: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  right: auto !important;
+  margin: 0 !important;
+  transform: none !important;
+  min-width: 190px;
+}
+
+/* TOMBOL BAWAH */
+
+.troubleshoot-navigation-row {
+  order: 2 !important;
+  position: relative !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.troubleshoot-navigation-row .materi-nav-button {
+  position: relative !important;
+  top: auto !important;
+  bottom: auto !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+.troubleshoot-navigation-row .secondary {
+  margin-right: auto !important;
+}
+
+.troubleshoot-navigation-row .primary {
+  margin-left: auto !important;
+}

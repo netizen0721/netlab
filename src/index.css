@@ -1,0 +1,1318 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #120b2b;
+  color: #ffffff;
+  min-width: 320px;
+}
+
+/* =========================================================
+   KABEL LAB
+   ========================================================= */
+
+.cable-lab-page {
+  min-height: 100vh;
+  padding: 28px 40px 50px;
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      rgba(83, 45, 190, 0.12),
+      transparent 38%
+    ),
+    linear-gradient(
+      135deg,
+      #09051f 0%,
+      #100832 50%,
+      #08051d 100%
+    );
+  color: #f8f7ff;
+}
+
+.cable-lab-page *,
+.cable-lab-page *::before,
+.cable-lab-page *::after {
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.cable-lab-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.cable-lab-label {
+  margin: 0 0 14px;
+  color: #9b68ff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+}
+
+.cable-lab-header h1 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 42px;
+  line-height: 1;
+  font-weight: 750;
+}
+
+.cable-lab-description {
+  margin: 18px 0 0;
+  color: #b7b1d6;
+  font-size: 13px;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.cable-back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 20px;
+  border: 1px solid rgba(126, 76, 255, 0.45);
+  border-radius: 18px;
+  color: #d7c9ff;
+  background: rgba(58, 27, 126, 0.13);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.cable-back-button:hover {
+  border-color: #8e5cff;
+  color: white;
+}
+
+.back-arrow {
+  font-size: 25px;
+}
+
+/* =========================================================
+   STANDARD
+   ========================================================= */
+
+.cable-standard-section {
+  min-height: 106px;
+  display: grid;
+  grid-template-columns: 430px minmax(400px, 680px);
+  align-items: center;
+  gap: 38px;
+  padding: 18px 20px;
+  border: 1px solid rgba(116, 87, 218, 0.26);
+  border-radius: 14px;
+  background: rgba(17, 11, 47, 0.78);
+  margin-bottom: 16px;
+}
+
+.standard-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.section-number {
+  color: #8455ff;
+  font-size: 30px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.standard-divider {
+  width: 1px;
+  height: 65px;
+  background: rgba(135, 112, 210, 0.25);
+}
+
+.standard-title h2 {
+  margin: 0 0 4px;
+  color: white;
+  font-size: 16px;
+}
+
+.standard-title p {
+  margin: 0;
+  color: #a9a2c9;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.standard-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.standard-button {
+  min-height: 68px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid rgba(105, 91, 177, 0.36);
+  border-radius: 13px;
+  background: rgba(21, 18, 65, 0.6);
+  color: white;
+  cursor: pointer;
+  text-align: left;
+}
+
+.standard-button.active {
+  border-color: #8d5cff;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(102, 51, 227, 0.4),
+      rgba(49, 25, 124, 0.45)
+    );
+  box-shadow:
+    0 0 0 1px rgba(142, 92, 255, 0.18),
+    0 0 25px rgba(111, 55, 244, 0.16);
+}
+
+.standard-button strong {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 17px;
+}
+
+.standard-button span {
+  color: #bcb5d9;
+  font-size: 12px;
+}
+
+.radio-circle {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #5e6190;
+  border-radius: 50%;
+}
+
+.standard-button.active .radio-circle {
+  border-color: #d8c8ff;
+}
+
+.radio-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #f3edff;
+}
+
+/* =========================================================
+   MAIN WORKSPACE
+   ========================================================= */
+
+.cable-main-workspace {
+  display: grid;
+  grid-template-columns:
+    minmax(340px, 0.92fr)
+    minmax(480px, 1.32fr)
+    minmax(300px, 0.72fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+.wire-section,
+.connector-section,
+.cable-sidebar {
+  min-width: 0;
+  height: 100%;
+  border: 1px solid rgba(116, 87, 218, 0.27);
+  background: rgba(10, 7, 34, 0.9);
+}
+
+.wire-section {
+  border-radius: 14px;
+  padding: 20px 24px 22px;
+}
+
+.connector-section {
+  border-radius: 14px;
+  padding: 28px;
+}
+
+.cable-sidebar {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+/* =========================================================
+   HEADING
+   ========================================================= */
+
+.workspace-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.workspace-heading h2 {
+  margin: 0 0 4px;
+  color: white;
+  font-size: 16px;
+}
+
+.workspace-heading p {
+  margin: 0;
+  color: #aaa4c6;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/* =========================================================
+   UTP CARD
+   ========================================================= */
+
+.utp-card {
+  min-height: 475px;
+  padding: 17px 16px 14px;
+  border: 1px solid rgba(101, 85, 178, 0.28);
+  border-radius: 13px;
+  background: rgba(20, 16, 56, 0.78);
+  overflow: hidden;
+}
+
+.utp-card-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #e8e5f7;
+  font-size: 14px;
+}
+
+.mini-icon {
+  color: #ded4ff;
+  font-size: 17px;
+}
+
+/* =========================================================
+   AREA KABEL
+   ========================================================= */
+
+.utp-wire-area {
+  position: relative;
+  height: 355px;
+  margin-top: 5px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* =========================================================
+   BUNGKUS KABEL BIRU
+   ========================================================= */
+
+.utp-jacket {
+  position: absolute;
+  left: -42px;
+  top: 124px;
+  width: 195px;
+  height: 138px;
+  border-radius: 14px 7px 7px 14px;
+  background:
+    linear-gradient(
+      180deg,
+      #269fe9 0%,
+      #087dc5 45%,
+      #055f9c 100%
+    );
+  box-shadow:
+    inset 0 9px 14px rgba(255, 255, 255, 0.16),
+    inset 0 -10px 15px rgba(0, 0, 0, 0.3),
+    0 8px 20px rgba(0, 0, 0, 0.28);
+  z-index: 100;
+}
+
+.jacket-opening {
+  position: absolute;
+  right: -13px;
+  top: 8px;
+  width: 38px;
+  height: 122px;
+  border-radius: 0 8px 8px 0;
+  background:
+    linear-gradient(
+      90deg,
+      #064d7e,
+      #0872b5,
+      #1689cf
+    );
+  box-shadow:
+    inset 4px 0 7px rgba(0, 0, 0, 0.35);
+  z-index: 101;
+}
+
+.jacket-hole {
+  position: absolute;
+  right: -2px;
+  top: 16px;
+  width: 27px;
+  height: 90px;
+  border-radius: 0 50% 50% 0;
+  background:
+    linear-gradient(
+      90deg,
+      #032f50,
+      #064b72
+    );
+  box-shadow:
+    inset 4px 0 7px rgba(0, 0, 0, 0.45);
+  z-index: 102;
+}
+
+/* =========================================================
+   BUNDLE INTI KABEL
+   ========================================================= */
+
+.loose-wires {
+  position: absolute;
+  left: 126px;
+  top: 84px;
+  width: 330px;
+  height: 215px;
+  z-index: 5;
+}
+
+.loose-wire {
+  position: absolute;
+  left: 0;
+  width: 310px;
+  height: 15px;
+  display: flex;
+  align-items: center;
+  cursor: grab;
+  user-select: none;
+  transform-origin: left center;
+  transition:
+    filter 0.18s ease,
+    transform 0.18s ease;
+  z-index: 1;
+}
+
+.loose-wire:hover {
+  filter: brightness(1.13);
+  z-index: 2;
+}
+
+.loose-wire:active {
+  cursor: grabbing;
+}
+
+.loose-wire-color {
+  width: 270px;
+  height: 11px;
+  border-radius: 6px;
+  box-shadow:
+    0 2px 3px rgba(0, 0, 0, 0.38),
+    inset 0 1px rgba(255, 255, 255, 0.5),
+    inset 0 -1px rgba(0, 0, 0, 0.18);
+}
+
+.wire-copper {
+  width: 34px;
+  height: 5px;
+  border-radius: 0 4px 4px 0;
+  background:
+    linear-gradient(
+      180deg,
+      #ffd59a,
+      #c66c29,
+      #efa15c
+    );
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+/* =========================================================
+   POSISI INTI KABEL
+   ========================================================= */
+
+.loose-wire-0 {
+  left: -10px;
+  top: 48px;
+  transform: rotate(-11deg);
+}
+
+.loose-wire-1 {
+  top: 63px;
+  transform: rotate(-8deg);
+}
+
+.loose-wire-2 {
+  top: 78px;
+  transform: rotate(-5deg);
+}
+
+.loose-wire-3 {
+  top: 93px;
+  transform: rotate(-2deg);
+}
+
+.loose-wire-4 {
+  top: 108px;
+  transform: rotate(2deg);
+}
+
+.loose-wire-5 {
+  top: 123px;
+  transform: rotate(5deg);
+}
+
+.loose-wire-6 {
+  top: 136px;
+  transform: rotate(8deg);
+}
+
+.loose-wire-7 {
+  left: -7px;
+  top: 150px;
+  transform: rotate(11deg);
+}
+
+/* =========================================================
+   PANGKAL BUNDLE
+   ========================================================= */
+
+.loose-wires::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 36px;
+  width: 25px;
+  height: 112px;
+  border-radius: 50%;
+  background:
+    linear-gradient(
+      90deg,
+      #073b5d,
+      #0a527b
+    );
+  z-index: -1;
+}
+
+/* =========================================================
+   TAMBAHAN PENUTUP PANGKAL
+   ========================================================= */
+
+.utp-jacket::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: 12px;
+  width: 42px;
+  height: 114px;
+  border-radius: 0 9px 9px 0;
+  background:
+    linear-gradient(
+      90deg,
+      #087fc7 0%,
+      #0875b9 55%,
+      #075f99 100%
+    );
+  box-shadow:
+    inset 4px 0 7px rgba(0, 0, 0, 0.2);
+  z-index: 103;
+}
+
+.jacket-opening,
+.jacket-hole {
+  z-index: 104;
+}
+
+/* =========================================================
+   BANTUAN
+   ========================================================= */
+
+.utp-help {
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 12px;
+  border: 1px solid rgba(83, 62, 170, 0.26);
+  border-radius: 11px;
+  background: rgba(65, 36, 151, 0.13);
+  color: #aaa4cf;
+}
+
+.utp-help > span {
+  color: #a882ff;
+  font-size: 20px;
+}
+
+.utp-help p {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+/* =========================================================
+   CONNECTOR
+   ========================================================= */
+
+.connector-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.connector-icon {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(109, 72, 216, 0.3);
+  border-radius: 50%;
+  color: #ad84ff;
+  background: rgba(85, 46, 176, 0.16);
+}
+
+.connector-heading h2 {
+  margin: 0 0 3px;
+  color: #ddd9ee;
+  font-size: 14px;
+}
+
+.connector-heading p {
+  margin: 0;
+  color: #918aaa;
+  font-size: 11px;
+}
+
+/* =========================================================
+   CONNECTOR STAGE
+   ========================================================= */
+
+.connector-stage {
+  position: relative;
+  min-height: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.drag-hint {
+  position: absolute;
+  left: 8%;
+  top: 43%;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #a992e6;
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+.hint-arrow {
+  color: #9566ff;
+  font-size: 45px;
+  transform:
+    translateY(-10px)
+    rotate(-15deg);
+}
+
+/* =========================================================
+   RJ45
+   ========================================================= */
+
+.rj45-real {
+  position: relative;
+  width: 205px;
+  height: 300px;
+  margin-left: 0;
+  transform: translateY(22px);
+  filter:
+    drop-shadow(
+      0 18px 22px
+      rgba(0, 0, 0, 0.38)
+    );
+}
+
+.rj45-pin-numbers {
+  position: absolute;
+  left: 11px;
+  top: 0;
+  width: 183px;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 1px;
+  z-index: 10;
+}
+
+.rj45-pin-numbers span {
+  color: #f2edf8;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.rj45-top {
+  position: absolute;
+  left: 6px;
+  top: 25px;
+  width: 193px;
+  height: 118px;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 2px;
+  padding: 8px 8px 0;
+  border: 2px solid rgba(231, 242, 255, 0.65);
+  border-radius: 12px 12px 5px 5px;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.52),
+      rgba(180, 204, 226, 0.19),
+      rgba(255, 255, 255, 0.5)
+    );
+  box-shadow:
+    inset 0 0 18px rgba(255, 255, 255, 0.18),
+    inset 0 -5px 12px rgba(79, 100, 125, 0.15);
+  z-index: 5;
+}
+
+.rj45-slot {
+  position: relative;
+  height: 102px;
+  border: 1px solid rgba(108, 125, 150, 0.45);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.rj45-slot:hover {
+  background: rgba(150, 104, 255, 0.16);
+  border-color: rgba(157, 117, 255, 0.65);
+}
+
+.metal-contact {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  top: 8px;
+  height: 51px;
+  border-radius: 2px 2px 4px 4px;
+  background:
+    linear-gradient(
+      90deg,
+      #b87519,
+      #ffd875 30%,
+      #e9aa32 55%,
+      #9e6413
+    );
+}
+
+.metal-highlight {
+  position: absolute;
+  top: 3px;
+  left: 2px;
+  right: 2px;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.inserted-wire {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  bottom: 7px;
+  height: 11px;
+  border-radius: 5px;
+  cursor: grab;
+  z-index: 5;
+}
+
+.rj45-body {
+  position: absolute;
+  left: 0;
+  top: 116px;
+  width: 205px;
+  height: 130px;
+  border: 2px solid rgba(232, 242, 255, 0.55);
+  border-radius: 5px 5px 13px 13px;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(232, 243, 255, 0.28),
+      rgba(180, 204, 227, 0.12),
+      rgba(240, 249, 255, 0.27)
+    );
+}
+
+.rj45-inner-window {
+  position: absolute;
+  left: 33px;
+  top: 27px;
+  width: 139px;
+  height: 63px;
+  border: 2px solid rgba(216, 231, 246, 0.45);
+  border-radius: 5px;
+}
+
+.inner-wire-view {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 8px;
+  height: 29px;
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.inner-wire {
+  flex: 1;
+  height: 15px;
+  border-radius: 4px 4px 2px 2px;
+}
+
+.rj45-latch {
+  position: absolute;
+  left: 61px;
+  bottom: -26px;
+  width: 84px;
+  height: 46px;
+  border: 2px solid rgba(220, 236, 251, 0.5);
+  border-top: 0;
+  border-radius: 0 0 11px 11px;
+}
+
+.latch-line {
+  position: absolute;
+  left: 11px;
+  right: 11px;
+  top: 13px;
+  height: 4px;
+  border-radius: 4px;
+  background: rgba(225, 238, 249, 0.35);
+}
+
+.rj45-cable-tail {
+  position: absolute;
+  left: 55px;
+  top: 230px;
+  width: 95px;
+  height: 95px;
+  border-radius: 0 0 10px 10px;
+  background:
+    linear-gradient(
+      90deg,
+      #0865a7,
+      #0b7dc4 35%,
+      #0a6eae 75%,
+      #075991
+    );
+}
+
+.tail-inner {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: 0;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* =========================================================
+   PIN PROGRESS
+   ========================================================= */
+
+.pin-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 34px;
+  color: #817b9e;
+  font-size: 10px;
+}
+
+.pin-progress-bar {
+  flex: 1;
+  height: 5px;
+  border-radius: 99px;
+  background: rgba(91, 76, 153, 0.22);
+  overflow: hidden;
+}
+
+.pin-progress-bar > div {
+  height: 100%;
+  border-radius: inherit;
+  background:
+    linear-gradient(
+      90deg,
+      #6534d8,
+      #9d6aff
+    );
+}
+
+/* =========================================================
+   SIDEBAR KANAN
+   ========================================================= */
+
+.sidebar-block {
+  padding: 24px 36px;
+  border-bottom: 1px solid rgba(104, 82, 177, 0.22);
+  flex: 1;
+  min-width: 0;
+}
+
+.sidebar-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  color: #c9c3df;
+}
+
+.sidebar-title span {
+  color: #a27cff;
+  font-size: 20px;
+}
+
+.sidebar-title strong {
+  font-size: 16px;
+}
+
+/* =========================================================
+   STATUS PIN
+   ========================================================= */
+
+.pin-status-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+  overflow: visible;
+}
+
+.pin-status {
+  min-width: 0;
+  min-height: 96px;
+  padding: 12px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(87, 72, 157, 0.35);
+  border-radius: 10px;
+  background: rgba(18, 15, 50, 0.66);
+  overflow: hidden;
+}
+
+.pin-status.filled {
+  border-color: rgba(112, 73, 218, 0.55);
+  background: rgba(76, 42, 158, 0.15);
+}
+
+.pin-status strong {
+  margin-bottom: 7px;
+  color: #d9d4e9;
+  font-size: 19px;
+  line-height: 1;
+}
+
+.pin-status span {
+  width: 100%;
+  max-width: 100%;
+  color: #777293;
+  font-size: 10px;
+  line-height: 1.25;
+  text-align: center;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.pin-status.filled span {
+  color: #b9a5e8;
+}
+
+/* =========================================================
+   WARNA KABEL
+   ========================================================= */
+
+.color-legend {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px 20px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 30px;
+  min-width: 0;
+}
+
+.legend-wire {
+  width: 27px;
+  height: 11px;
+  flex: 0 0 27px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.legend-item span {
+  color: #a7a1c2;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   URUTAN STANDAR
+   HANYA SETELAH PERIKSA
+   ========================================================= */
+
+.standard-reference-block {
+  flex: 0.8;
+  background: rgba(31, 20, 70, 0.18);
+}
+
+.reference-mini {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 5px;
+  padding: 9px 6px 7px;
+  border: 1px solid rgba(82, 65, 151, 0.3);
+  border-radius: 10px;
+  background: rgba(16, 12, 43, 0.72);
+}
+
+.reference-mini-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.reference-mini-wire {
+  width: 20px;
+  height: 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.17);
+}
+
+.reference-mini-item span {
+  color: #aaa4c1;
+  font-size: 9px;
+}
+
+/* =========================================================
+   RESULT
+   ========================================================= */
+
+.cable-result {
+  min-height: 78px;
+  margin-top: 16px;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-radius: 12px;
+}
+
+.cable-result.warning {
+  border: 1px solid rgba(237, 190, 38, 0.75);
+  background: rgba(99, 70, 15, 0.18);
+}
+
+.cable-result.error {
+  border: 1px solid rgba(239, 91, 108, 0.55);
+  background: rgba(106, 24, 42, 0.18);
+}
+
+.cable-result.success {
+  border: 1px solid rgba(62, 207, 133, 0.55);
+  background: rgba(25, 102, 68, 0.18);
+}
+
+.result-icon {
+  width: 35px;
+  height: 35px;
+  flex: 0 0 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #1b1430;
+  background: #ffd04a;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.cable-result.error .result-icon {
+  background: #ff6678;
+}
+
+.cable-result.success .result-icon {
+  background: #56e19b;
+}
+
+.cable-result h3 {
+  margin: 0 0 3px;
+  color: #ffd34e;
+  font-size: 15px;
+}
+
+.cable-result.error h3 {
+  color: #ff8a98;
+}
+
+.cable-result.success h3 {
+  color: #6df0ae;
+}
+
+.cable-result p {
+  margin: 0;
+  color: #aaa4bf;
+  font-size: 11px;
+}
+
+/* =========================================================
+   BUTTON
+   ========================================================= */
+
+.cable-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
+  margin-top: 12px;
+}
+
+.cable-reset-button,
+.cable-check-button {
+  min-height: 55px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.cable-reset-button {
+  min-width: 168px;
+  border: 1px solid rgba(83, 67, 156, 0.38);
+  background: rgba(39, 27, 92, 0.42);
+  color: #c7bfdf;
+}
+
+.cable-check-button {
+  min-width: 220px;
+  border: 1px solid rgba(125, 77, 255, 0.85);
+  background:
+    linear-gradient(
+      135deg,
+      #6430d7,
+      #6f39ec
+    );
+  color: white;
+  box-shadow:
+    0 7px 20px rgba(85, 39, 191, 0.24);
+}
+
+.cable-reset-button:hover,
+.cable-check-button:hover {
+  transform: translateY(-1px);
+}
+
+.cable-reset-button span,
+.cable-check-button span {
+  margin-right: 9px;
+  font-size: 20px;
+}
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.cable-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.cable-nav-button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 0 17px;
+  border: 1px solid rgba(96, 77, 169, 0.3);
+  border-radius: 9px;
+  background: rgba(23, 17, 59, 0.45);
+  color: #bdb5d8;
+  text-decoration: none;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.cable-nav-button.primary {
+  border-color: rgba(116, 77, 225, 0.45);
+  background: rgba(80, 45, 173, 0.25);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1250px) {
+  .cable-main-workspace {
+    grid-template-columns:
+      minmax(300px, 0.8fr)
+      minmax(430px, 1.2fr);
+  }
+
+  .cable-sidebar {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    min-height: auto;
+  }
+
+  .sidebar-block {
+    border-right: 1px solid rgba(104, 82, 177, 0.22);
+    border-bottom: 0;
+  }
+
+  .cable-standard-section {
+    grid-template-columns: 360px 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .cable-lab-page {
+    padding: 24px 20px 40px;
+  }
+
+  .cable-lab-header {
+    flex-direction: column;
+  }
+
+  .cable-standard-section {
+    grid-template-columns: 1fr;
+  }
+
+  .cable-main-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .cable-sidebar {
+    display: block;
+    min-height: auto;
+  }
+
+  .sidebar-block {
+    border-right: 0;
+    border-bottom: 1px solid rgba(104, 82, 177, 0.22);
+  }
+
+  .pin-status-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .cable-lab-page {
+    padding: 20px 13px 35px;
+  }
+
+  .cable-lab-header h1 {
+    font-size: 31px;
+  }
+
+  .cable-lab-description {
+    white-space: normal;
+  }
+
+  .cable-back-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .standard-buttons {
+    grid-template-columns: 1fr;
+  }
+
+  .wire-section,
+  .connector-section {
+    padding: 16px;
+  }
+
+  .drag-hint {
+    left: 0;
+    transform: scale(0.85);
+    transform-origin: left center;
+  }
+
+  .rj45-real {
+    transform: translateY(18px) scale(0.82);
+    margin-left: 0;
+  }
+
+  .cable-controls {
+    flex-direction: column;
+  }
+
+  .cable-reset-button,
+  .cable-check-button {
+    width: 100%;
+  }
+
+  .cable-navigation {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  .cable-nav-button {
+    justify-content: center;
+  }
+
+  .sidebar-block {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .pin-status-grid {
+    gap: 9px;
+  }
+
+  .pin-status {
+    min-height: 90px;
+    padding: 10px 4px;
+  }
+
+  .pin-status strong {
+    font-size: 17px;
+  }
+
+  .pin-status span {
+    font-size: 9px;
+  }
+}

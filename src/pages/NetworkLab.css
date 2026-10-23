@@ -1,0 +1,516 @@
+/* =========================================
+   NETWORK LAB
+   ========================================= */
+
+.network-lab {
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 40px;
+}
+
+/* =========================================
+   HEADER
+   ========================================= */
+
+.network-header {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+.network-header p {
+  margin: 0 0 12px;
+  color: #a78bfa;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.network-header h1 {
+  margin: 0 0 14px;
+  color: white;
+  font-size: 42px;
+  font-weight: 800;
+}
+
+.network-header span {
+  color: #b8b3ca;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* =========================================
+   CONTENT
+   ========================================= */
+
+.network-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.network-content > h2 {
+  margin: 0 0 10px;
+  color: white;
+  font-size: 26px;
+}
+
+.network-content > p {
+  margin: 0 0 24px;
+  color: #aaa4bd;
+  line-height: 1.6;
+}
+
+/* =========================================
+   TOPOLOGY SELECTOR
+   ========================================= */
+
+.topology-selector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.topology-selector label {
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.topology-selector select {
+  padding: 10px 14px;
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  border-radius: 10px;
+  background: #211442;
+  color: white;
+  outline: none;
+  cursor: pointer;
+}
+
+.topology-selector select:focus {
+  border-color: #a78bfa;
+}
+
+/* =========================================
+   DEVICE LIST
+   ========================================= */
+
+.device-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.device-list button {
+  padding: 11px 16px;
+  border: 1px solid rgba(167, 139, 250, 0.25);
+  border-radius: 10px;
+  background: rgba(43, 28, 85, 0.95);
+  color: white;
+  font-size: 14px;
+  cursor: grab;
+  transition: 0.2s ease;
+}
+
+.device-list button:hover {
+  background: #7c3aed;
+  border-color: #a78bfa;
+  transform: translateY(-2px);
+}
+
+.device-list button:active {
+  cursor: grabbing;
+}
+
+/* =========================================
+   CONNECTION INSTRUCTION
+   ========================================= */
+
+.connection-instruction {
+  margin-bottom: 18px;
+  padding: 13px 16px;
+  border: 1px solid rgba(167, 139, 250, 0.18);
+  border-radius: 12px;
+  background: rgba(30, 20, 65, 0.75);
+  color: #cfc8df;
+  font-size: 14px;
+}
+
+/* =========================================
+   ACTION BUTTONS
+   ========================================= */
+
+.network-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.network-actions button {
+  padding: 11px 18px;
+  border-radius: 10px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.check-button {
+  border: 1px solid rgba(167, 139, 250, 0.4);
+  background: #7c3aed;
+}
+
+.check-button:hover {
+  background: #8b5cf6;
+  transform: translateY(-2px);
+}
+
+.reset-button {
+  border: 1px solid rgba(167, 139, 250, 0.25);
+  background: rgba(43, 28, 85, 0.95);
+}
+
+.reset-button:hover {
+  background: #5b21b6;
+  border-color: #a78bfa;
+  transform: translateY(-2px);
+}
+
+/* =========================================
+   CHECK RESULT
+   ========================================= */
+
+.check-result {
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 14px 18px;
+  box-sizing: border-box;
+  border: 1px solid rgba(167, 139, 250, 0.2);
+  border-radius: 12px;
+  background: rgba(30, 20, 65, 0.8);
+  color: #e9e4f5;
+  line-height: 1.6;
+}
+
+/* =========================================
+   NETWORK BOARD / CANVAS
+   ========================================= */
+
+.network-board {
+  position: relative;
+  width: 100%;
+  height: 560px;
+  margin: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  border-radius: 22px;
+  background:
+    radial-gradient(
+      circle at center,
+      #8b5cf6 0%,
+      #6d3fc4 45%,
+      #432078 100%
+    );
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.25);
+  user-select: none;
+}
+
+/* Empty board */
+
+.network-board > p {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  color: white;
+  font-size: 24px;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.network-board > span {
+  position: absolute;
+  left: 50%;
+  top: 54%;
+  transform: translate(-50%, -50%);
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 14px;
+  pointer-events: none;
+}
+
+/* =========================================
+   CONNECTION LINES
+   ========================================= */
+
+.connection-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.connection-layer line {
+  stroke: rgba(255, 255, 255, 0.8);
+  stroke-width: 3;
+  stroke-linecap: round;
+  filter: drop-shadow(
+    0 0 5px rgba(255, 255, 255, 0.35)
+  );
+}
+
+/* =========================================
+   PLACED DEVICES
+   ========================================= */
+
+.placed-devices {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.placed-device {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  min-height: 85px;
+  padding: 12px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 16px;
+  background: rgba(24, 15, 53, 0.92);
+  color: white;
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.3);
+  cursor: grab;
+  pointer-events: auto;
+  touch-action: none;
+  user-select: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.placed-device:hover {
+  border-color: #c4b5fd;
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+.placed-device:active {
+  cursor: grabbing;
+}
+
+.device-icon {
+  font-size: 32px;
+  line-height: 1;
+}
+
+.placed-device span {
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Selected device */
+
+.placed-device.selected-device {
+  border-color: #ffffff;
+  box-shadow:
+    0 0 0 3px rgba(196, 181, 253, 0.4),
+    0 12px 30px rgba(0, 0, 0, 0.4);
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+/* =========================================
+   BOTTOM NAVIGATION
+   ========================================= */
+
+.network-bottom-navigation {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  margin: 24px 0 0;
+  padding: 0 0 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  box-sizing: border-box;
+}
+
+.network-back-button,
+.network-next-button {
+  position: relative;
+  z-index: 10;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 220px;
+
+  padding: 11px 18px;
+
+  border-radius: 10px;
+
+  color: white;
+  text-decoration: none;
+
+  cursor: pointer;
+
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+
+  transition: 0.2s ease;
+}
+
+/* Kembali ke Materi */
+
+.network-back-button {
+  border: 1px solid rgba(167, 139, 250, 0.35);
+  background: rgba(30, 20, 65, 0.9);
+}
+
+.network-back-button:hover {
+  background: #7c3aed;
+  border-color: #a78bfa;
+  transform: translateY(-2px);
+}
+
+/* Materi Berikutnya */
+
+.network-next-button {
+  border: 1px solid rgba(167, 139, 250, 0.4);
+  background: linear-gradient(
+    135deg,
+    #7046b5,
+    #8b5bd1
+  );
+}
+
+.network-next-button:hover {
+  background: linear-gradient(
+    135deg,
+    #8054c5,
+    #9669dc
+  );
+  border-color: #c4b5fd;
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 20px rgba(112, 70, 181, 0.3);
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 900px) {
+  .network-lab {
+    padding: 30px 24px;
+  }
+
+  .network-header h1 {
+    font-size: 36px;
+  }
+
+  .network-board {
+    height: 500px;
+  }
+}
+
+@media (max-width: 600px) {
+  .network-lab {
+    padding: 25px 18px;
+  }
+
+  .network-header {
+    margin-bottom: 30px;
+  }
+
+  .network-header h1 {
+    font-size: 30px;
+  }
+
+  .network-header span {
+    font-size: 14px;
+  }
+
+  .network-content > h2 {
+    font-size: 23px;
+  }
+
+  .topology-selector {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .device-list {
+    gap: 8px;
+  }
+
+  .device-list button {
+    padding: 9px 12px;
+    font-size: 13px;
+  }
+
+  .network-actions {
+    flex-direction: column;
+  }
+
+  .network-actions button {
+    width: 100%;
+  }
+
+  .network-board {
+    height: 450px;
+    border-radius: 18px;
+  }
+
+  .placed-device {
+    width: 85px;
+    min-height: 75px;
+  }
+
+  .device-icon {
+    font-size: 27px;
+  }
+
+  .placed-device span {
+    font-size: 12px;
+  }
+
+  /* BOTTOM NAVIGATION */
+
+  .network-bottom-navigation {
+    gap: 12px;
+  }
+
+  .network-back-button,
+  .network-next-button {
+    min-width: 0;
+    flex: 1;
+    padding: 11px 12px;
+    font-size: 13px;
+  }
+}

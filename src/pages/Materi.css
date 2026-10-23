@@ -1,0 +1,664 @@
+/* ================================= */
+/* VIDEO PEMBELAJARAN */
+/* ================================= */
+
+.materi-video-section {
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto 45px;
+  padding: 24px 28px;
+  box-sizing: border-box;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(39, 25, 76, 0.92),
+      rgba(24, 15, 50, 0.92)
+    );
+
+  border: 1px solid rgba(168, 85, 247, 0.18);
+  border-radius: 18px;
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.22),
+    0 0 25px rgba(168, 85, 247, 0.04);
+}
+
+
+/* ================================= */
+/* JUDUL VIDEO */
+/* ================================= */
+
+.materi-video-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.materi-video-icon {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background: rgba(125, 80, 195, 0.14);
+  border: 1px solid rgba(165, 120, 240, 0.2);
+
+  font-size: 20px;
+
+  box-shadow:
+    0 0 20px rgba(168, 85, 247, 0.06);
+}
+
+.materi-video-heading span {
+  display: block;
+  margin-bottom: 6px;
+
+  color: #a98be8;
+
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+.materi-video-heading h2 {
+  margin: 0 0 6px;
+
+  color: #ffffff;
+
+  font-size: 22px;
+  font-weight: 750;
+  line-height: 1.3;
+}
+
+.materi-video-heading p {
+  margin: 0;
+
+  color: #aaa2b8;
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+
+/* ================================= */
+/* VIDEO */
+/* ================================= */
+
+.materi-video-container {
+  position: relative;
+
+  width: 100%;
+  max-width: 900px;
+
+  margin: 0 auto;
+
+  aspect-ratio: 16 / 9;
+
+  overflow: hidden;
+
+  border-radius: 14px;
+
+  border: 1px solid rgba(168, 85, 247, 0.18);
+
+  background: #08080d;
+
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.25),
+    0 0 22px rgba(168, 85, 247, 0.05);
+}
+
+.materi-video-container iframe {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  border: 0;
+}
+
+
+/* ================================= */
+/* PANEL PENGENALAN */
+/* ================================= */
+
+.materi-intro-card {
+  width: 100%;
+  max-width: 1050px;
+
+  margin: 0 auto 50px;
+
+  padding: 30px 34px;
+
+  box-sizing: border-box;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(39, 25, 76, 0.94),
+      rgba(24, 15, 50, 0.94)
+    );
+
+  border: 1px solid rgba(168, 85, 247, 0.18);
+  border-radius: 18px;
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.22),
+    0 0 25px rgba(168, 85, 247, 0.04);
+}
+
+
+/* ================================= */
+/* ISI PENGENALAN */
+/* ================================= */
+
+.materi-intro-content {
+  width: 100%;
+}
+
+.materi-intro-label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #a98be8;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.materi-intro-content h2 {
+  margin: 0 0 14px;
+
+  color: #ffffff;
+
+  font-size: 25px;
+  font-weight: 750;
+  line-height: 1.3;
+}
+
+.materi-intro-content p {
+  margin: 0 0 13px;
+
+  color: #c4bdd2;
+
+  font-size: 14px;
+  font-weight: 400;
+
+  line-height: 1.8;
+}
+
+.materi-intro-content p:last-child {
+  margin-bottom: 0;
+}
+
+
+/* ================================= */
+/* HOVER PENGENALAN */
+/* ================================= */
+
+.materi-intro-card:hover {
+  border-color: rgba(168, 85, 247, 0.28);
+
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.24),
+    0 0 28px rgba(168, 85, 247, 0.05);
+}
+
+
+/* ================================= */
+/* NAVIGASI MATERI */
+/* ================================= */
+
+.materi-navigation {
+  width: 100%;
+  max-width: 1050px;
+
+  margin: 45px auto 0;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-end;
+
+  gap: 18px;
+}
+
+
+/* ================================= */
+/* DOWNLOAD MATERI */
+/* ================================= */
+
+.materi-download-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  min-height: 46px;
+
+  padding: 0 22px;
+
+  box-sizing: border-box;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6d28d9,
+      #9333ea
+    );
+
+  border: 1px solid rgba(168, 85, 247, 0.45);
+
+  border-radius: 10px;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  text-decoration: none;
+
+  box-shadow:
+    0 8px 22px rgba(124, 58, 237, 0.22),
+    0 0 18px rgba(168, 85, 247, 0.08);
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.materi-download-button:hover {
+  color: #ffffff;
+
+  text-decoration: none;
+
+  transform: translateY(-2px);
+
+  border-color: rgba(192, 132, 252, 0.7);
+
+  box-shadow:
+    0 12px 28px rgba(124, 58, 237, 0.32),
+    0 0 24px rgba(168, 85, 247, 0.14);
+}
+
+.materi-download-button:active {
+  transform: translateY(0);
+}
+
+
+/* ================================= */
+/* BARIS NAVIGASI BAWAH */
+/* ================================= */
+
+.materi-navigation-row {
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+
+/* ================================= */
+/* TOMBOL NAVIGASI */
+/* ================================= */
+
+.materi-nav-button {
+  min-height: 46px;
+
+  padding: 0 22px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+
+  border-radius: 10px;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+/* ================================= */
+/* MATERI SEBELUMNYA */
+/* ================================= */
+
+.materi-nav-prev {
+  color: #cfc6dc;
+
+  background: rgba(39, 25, 76, 0.8);
+
+  border: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+.materi-nav-prev:hover {
+  color: #ffffff;
+
+  text-decoration: none;
+
+  transform: translateY(-2px);
+
+  border-color: rgba(168, 85, 247, 0.45);
+}
+
+
+/* ================================= */
+/* MATERI BERIKUTNYA */
+/* ================================= */
+
+.materi-nav-next {
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #6d28d9,
+      #9333ea
+    );
+
+  border: 1px solid rgba(168, 85, 247, 0.45);
+
+  box-shadow:
+    0 8px 22px rgba(124, 58, 237, 0.2);
+}
+
+.materi-nav-next:hover {
+  color: #ffffff;
+
+  text-decoration: none;
+
+  transform: translateY(-2px);
+
+  border-color: rgba(192, 132, 252, 0.7);
+
+  box-shadow:
+    0 12px 28px rgba(124, 58, 237, 0.3);
+}
+
+
+/* ================================= */
+/* TABLET */
+/* ================================= */
+
+@media (max-width: 900px) {
+
+  .materi-video-section {
+    max-width: 95%;
+
+    padding: 22px;
+
+    margin-bottom: 40px;
+  }
+
+  .materi-video-container {
+    max-width: 100%;
+  }
+
+  .materi-intro-card {
+    max-width: 95%;
+
+    padding: 28px 30px;
+
+    margin-bottom: 40px;
+  }
+
+  .materi-intro-content h2 {
+    font-size: 23px;
+  }
+
+  .materi-intro-content p {
+    font-size: 14px;
+  }
+
+  .materi-navigation {
+    max-width: 95%;
+  }
+}
+
+
+/* ================================= */
+/* MOBILE */
+/* ================================= */
+
+@media (max-width: 600px) {
+
+  .materi-video-section {
+    width: 100%;
+
+    max-width: 100%;
+
+    padding: 18px;
+
+    margin-bottom: 35px;
+
+    border-radius: 15px;
+  }
+
+  .materi-video-heading {
+    gap: 11px;
+
+    margin-bottom: 16px;
+  }
+
+  .materi-video-icon {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 11px;
+
+    font-size: 18px;
+  }
+
+  .materi-video-heading span {
+    font-size: 10px;
+
+    letter-spacing: 1.1px;
+  }
+
+  .materi-video-heading h2 {
+    font-size: 19px;
+  }
+
+  .materi-video-heading p {
+    font-size: 12px;
+
+    line-height: 1.6;
+  }
+
+  .materi-video-container {
+    width: 100%;
+
+    max-width: 100%;
+
+    border-radius: 11px;
+  }
+
+
+  /* ================================= */
+  /* PANEL PENGENALAN */
+  /* ================================= */
+
+  .materi-intro-card {
+    width: 100%;
+
+    max-width: 100%;
+
+    padding: 23px;
+
+    margin-bottom: 35px;
+
+    border-radius: 15px;
+  }
+
+  .materi-intro-label {
+    margin-bottom: 7px;
+
+    font-size: 10px;
+
+    letter-spacing: 1.2px;
+  }
+
+  .materi-intro-content h2 {
+    margin-bottom: 12px;
+
+    font-size: 21px;
+  }
+
+  .materi-intro-content p {
+    font-size: 13px;
+
+    line-height: 1.75;
+  }
+
+
+  /* ================================= */
+  /* NAVIGASI MOBILE */
+  /* ================================= */
+
+  .materi-navigation {
+    width: 100%;
+
+    max-width: 100%;
+
+    margin-top: 35px;
+
+    gap: 14px;
+
+    align-items: flex-end;
+  }
+
+  .materi-navigation-row {
+    width: 100%;
+
+    gap: 10px;
+  }
+
+  .materi-nav-button {
+    flex: 1;
+
+    padding: 0 12px;
+
+    font-size: 12px;
+  }
+
+  .materi-download-button {
+    width: auto;
+
+    min-height: 44px;
+
+    padding: 0 14px;
+
+    font-size: 12px;
+  }
+}
+/* =========================================
+   LABEL MATERI PEMBELAJARAN
+   ========================================= */
+
+.materi-hero-label {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: #a78bfa;
+  text-transform: uppercase;
+}
+/* =========================================
+   JUDUL MATERI PEMBELAJARAN
+   ========================================= */
+
+/* =========================================
+   JUDUL MATERI PEMBELAJARAN
+   ========================================= */
+
+.materi-page .materi-header .materi-header-title {
+  margin: 0 0 12px 0 !important;
+  color: #a855f7 !important;
+  font-size: 24px !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+  letter-spacing: 3px !important;
+  text-transform: uppercase;
+}
+/* =========================================
+   MATERI SUDAH DIPELAJARI
+   ========================================= */
+
+.materi-card.completed {
+  border-color: #22c55e;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(34, 197, 94, 0.16),
+      rgba(24, 15, 50, 0.94)
+    );
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.22),
+    0 0 25px rgba(34, 197, 94, 0.12);
+}
+
+.materi-card.completed .materi-button {
+  color: #ffffff;
+  background: #22c55e;
+  border-color: #22c55e;
+}
+
+.materi-card.completed .materi-button:hover {
+  color: #ffffff;
+  background: #16a34a;
+  border-color: #16a34a;
+}
+.materi-card.completed {
+  border: 1px solid #22c55e !important;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(34, 197, 94, 0.18),
+      rgba(24, 15, 50, 0.94)
+    ) !important;
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.22),
+    0 0 25px rgba(34, 197, 94, 0.18) !important;
+}
+
+.materi-card.completed .materi-button {
+  background: #22c55e !important;
+  border-color: #22c55e !important;
+  color: #ffffff !important;
+}
+
+.materi-card.completed .materi-button:hover {
+  background: #16a34a !important;
+  border-color: #16a34a !important;
+}

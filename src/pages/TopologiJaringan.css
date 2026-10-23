@@ -1,0 +1,990 @@
+.topologi-page {
+  min-height: 100vh;
+  padding: 32px 6%;
+  box-sizing: border-box;
+  color: #ffffff;
+
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(112, 62, 190, 0.18),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 90% 20%,
+      rgba(65, 90, 180, 0.12),
+      transparent 25%
+    ),
+    linear-gradient(
+      135deg,
+      #08080d 0%,
+      #110b1d 50%,
+      #08080d 100%
+    );
+}
+
+/* =========================
+   TOP NAVIGATION
+========================= */
+
+.topologi-top-navigation {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 42px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  gap: 18px;
+}
+
+.topologi-back-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 42px;
+  padding: 0 17px;
+
+  box-sizing: border-box;
+
+  border-radius: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  background: rgba(255, 255, 255, 0.035);
+
+  color: #d8d0e8;
+
+  text-decoration: none;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  transition: 0.2s ease;
+}
+
+.topologi-back-button:hover {
+  color: #ffffff;
+
+  background: rgba(140, 100, 220, 0.1);
+
+  border-color: rgba(170, 135, 245, 0.35);
+
+  transform: translateX(-3px);
+}
+
+.topologi-material-number {
+  display: block;
+
+  color: #a98be8;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  letter-spacing: 2px;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.topologi-header {
+  width: 100%;
+  max-width: 1200px;
+
+  margin: 0 auto 45px;
+}
+
+.topologi-header h1 {
+  margin: 0 0 14px;
+
+  color: #ffffff;
+
+  font-size: 42px;
+  line-height: 1.15;
+  font-weight: 800;
+}
+
+.topologi-header span {
+  display: block;
+
+  max-width: 780px;
+
+  color: #aaa2b8;
+
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+/* =========================
+   VIDEO
+========================= */
+
+.topologi-video-section {
+  width: 100%;
+  max-width: 1050px;
+
+  margin: 0 auto 45px;
+  padding: 24px 28px;
+
+  box-sizing: border-box;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(39, 25, 76, 0.92),
+      rgba(24, 15, 50, 0.92)
+    );
+
+  border: 1px solid rgba(168, 85, 247, 0.18);
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.22),
+    0 0 25px rgba(168, 85, 247, 0.04);
+}
+
+.topologi-video-heading {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.topologi-video-icon {
+  width: 46px;
+  height: 46px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background: rgba(125, 80, 195, 0.14);
+
+  border: 1px solid rgba(165, 120, 240, 0.2);
+
+  font-size: 20px;
+}
+
+.topologi-video-heading span {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #a98be8;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1.4px;
+}
+
+.topologi-video-heading h2 {
+  margin: 0 0 6px;
+
+  color: #ffffff;
+
+  font-size: 22px;
+  font-weight: 750;
+
+  line-height: 1.3;
+}
+
+.topologi-video-heading p {
+  margin: 0;
+
+  color: #aaa2b8;
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.topologi-video-container {
+  position: relative;
+
+  width: 100%;
+  max-width: 900px;
+
+  margin: 0 auto;
+
+  aspect-ratio: 16 / 9;
+
+  overflow: hidden;
+
+  border-radius: 14px;
+
+  border: 1px solid rgba(168, 85, 247, 0.18);
+
+  background: #08080d;
+
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.25),
+    0 0 22px rgba(168, 85, 247, 0.05);
+}
+
+.topologi-video-container iframe {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  border: 0;
+}
+
+/* =========================
+   INTRO
+========================= */
+
+.topologi-intro-card {
+  width: 100%;
+  max-width: 1050px;
+
+  margin: 0 auto 50px;
+  padding: 30px 34px;
+
+  box-sizing: border-box;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(39, 25, 76, 0.94),
+      rgba(24, 15, 50, 0.94)
+    );
+
+  border: 1px solid rgba(168, 85, 247, 0.18);
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.22),
+    0 0 25px rgba(168, 85, 247, 0.04);
+}
+
+.topologi-intro-label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #a98be8;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+}
+
+.topologi-intro-card h2 {
+  margin: 0 0 14px;
+
+  color: #ffffff;
+
+  font-size: 25px;
+  font-weight: 750;
+
+  line-height: 1.3;
+}
+
+.topologi-intro-card p {
+  margin: 0 0 13px;
+
+  color: #c4bdd2;
+
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.topologi-intro-card p:last-child {
+  margin-bottom: 0;
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.topologi-content {
+  width: 100%;
+  max-width: 1200px;
+
+  margin: 0 auto 50px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+}
+
+/* =========================
+   SECTION CARD
+========================= */
+
+.topologi-section-card {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 28px;
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: 22px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.018)
+    );
+
+  transition: 0.25s ease;
+}
+
+.topologi-section-card:hover {
+  transform: translateY(-3px);
+
+  border-color: rgba(160, 120, 235, 0.3);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(130, 85, 205, 0.1),
+      rgba(255, 255, 255, 0.025)
+    );
+}
+
+.topologi-section-number {
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(120, 75, 190, 0.95),
+      rgba(55, 35, 100, 0.95)
+    );
+
+  border: 1px solid rgba(180, 145, 250, 0.4);
+
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.topologi-section-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.topologi-section-content h2 {
+  margin: 0 0 10px;
+
+  color: #ffffff;
+
+  font-size: 22px;
+  font-weight: 750;
+}
+
+.topologi-section-content > p {
+  margin: 0 0 22px;
+
+  color: #aaa2b8;
+
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+/* =========================
+   VISUALISASI TOPOLOGI
+========================= */
+
+.topologi-diagram {
+  width: 100%;
+  height: 330px;
+
+  margin: 0 0 24px;
+
+  position: relative;
+
+  overflow: hidden;
+
+  box-sizing: border-box;
+
+  border-radius: 16px;
+
+  border: 1px solid rgba(168, 85, 247, 0.2);
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(125, 80, 195, 0.1),
+      transparent 55%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(5, 5, 12, 0.85),
+      rgba(18, 11, 32, 0.75)
+    );
+
+  box-shadow:
+    inset 0 0 30px rgba(120, 75, 190, 0.04),
+    0 8px 20px rgba(0, 0, 0, 0.16);
+}
+
+.diagram-title {
+  position: absolute;
+
+  top: 14px;
+  left: 18px;
+
+  z-index: 10;
+
+  color: #a98be8;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1.3px;
+
+  text-transform: uppercase;
+}
+
+.topologi-svg {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  padding-top: 8px;
+
+  box-sizing: border-box;
+}
+
+.network-line {
+  stroke: rgba(180, 145, 250, 0.7);
+  stroke-width: 4;
+
+  stroke-linecap: round;
+
+  filter: drop-shadow(
+    0 0 5px rgba(150, 105, 230, 0.25)
+  );
+}
+
+.network-main-line {
+  stroke: rgba(190, 155, 250, 0.8);
+  stroke-width: 7;
+
+  stroke-linecap: round;
+
+  filter: drop-shadow(
+    0 0 7px rgba(150, 105, 230, 0.3)
+  );
+}
+
+.network-ring {
+  fill: none;
+
+  stroke: rgba(180, 145, 250, 0.7);
+
+  stroke-width: 7;
+
+  stroke-linecap: round;
+
+  filter: drop-shadow(
+    0 0 7px rgba(150, 105, 230, 0.25)
+  );
+}
+
+.network-pc,
+.network-switch {
+  stroke-width: 2;
+}
+
+.network-pc {
+  fill: #21153a;
+  stroke: rgba(180, 145, 250, 0.65);
+}
+
+.network-switch {
+  fill: #432879;
+  stroke: rgba(205, 175, 255, 0.8);
+}
+
+.network-text {
+  fill: #ffffff;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 16px;
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+.network-label {
+  fill: #a98be8;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  letter-spacing: 2px;
+}
+
+.network-end {
+  fill: #a98be8;
+}
+
+/* =========================
+   INFO GRID
+========================= */
+
+.topologi-info-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 18px;
+}
+
+.topologi-info-grid > div {
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.025);
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.topologi-info-grid h3 {
+  margin: 0 0 12px;
+
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 750;
+}
+
+.topologi-info-grid ul {
+  margin: 0;
+
+  padding-left: 20px;
+}
+
+.topologi-info-grid li {
+  margin-bottom: 7px;
+
+  color: #aaa2b8;
+
+  font-size: 13px;
+
+  line-height: 1.7;
+}
+
+.topologi-info-grid li:last-child {
+  margin-bottom: 0;
+}
+
+/* =========================
+   TIP
+========================= */
+
+.topologi-tip-card {
+  width: 100%;
+  max-width: 1200px;
+
+  margin: 0 auto 50px;
+  padding: 30px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: 20px;
+
+  border-radius: 18px;
+
+  border: 1px solid rgba(155, 115, 240, 0.18);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(120, 75, 190, 0.12),
+      rgba(255, 255, 255, 0.025)
+    );
+}
+
+.topologi-tip-icon {
+  width: 50px;
+  height: 50px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background: rgba(125, 80, 195, 0.14);
+
+  border: 1px solid rgba(165, 120, 240, 0.2);
+
+  font-size: 22px;
+}
+
+.topologi-tip-card span {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #a98be8;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+}
+
+.topologi-tip-card h2 {
+  margin: 0 0 10px;
+
+  color: #ffffff;
+
+  font-size: 23px;
+}
+
+.topologi-tip-card p {
+  margin: 0;
+
+  color: #aaa2b8;
+
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+/* =========================
+   BOTTOM NAVIGATION
+========================= */
+
+.materi-navigation {
+  position: relative;
+
+  width: 100%;
+  max-width: 1200px;
+
+  height: 150px;
+
+  margin: 0 auto;
+
+  box-sizing: border-box;
+}
+
+.materi-download-button {
+  position: absolute;
+
+  left: 50%;
+  top: 0;
+
+  transform: translateX(-50%);
+
+  min-height: 46px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 20px;
+
+  box-sizing: border-box;
+
+  border-radius: 12px;
+
+  color: #ffffff;
+
+  background: rgba(120, 75, 190, 0.28);
+
+  border: 1px solid rgba(155, 115, 240, 0.4);
+
+  font-size: 13px;
+  font-weight: 700;
+
+  text-decoration: none;
+
+  white-space: nowrap;
+
+  transition: 0.2s ease;
+}
+
+.materi-download-button:hover {
+  background: rgba(140, 90, 215, 0.4);
+
+  border-color: rgba(180, 145, 250, 0.55);
+
+  transform: translateX(-50%) translateY(-2px);
+}
+
+.materi-nav-button {
+  min-height: 46px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 20px;
+
+  box-sizing: border-box;
+
+  border-radius: 12px;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  text-decoration: none;
+
+  white-space: nowrap;
+
+  transition: 0.2s ease;
+}
+
+.materi-navigation .materi-nav-prev {
+  position: absolute;
+
+  left: 0;
+  bottom: 20px;
+}
+
+.materi-navigation .materi-nav-next {
+  position: absolute;
+
+  right: 0;
+  bottom: 20px;
+}
+
+.materi-nav-button.primary {
+  color: #ffffff;
+
+  background: rgba(120, 75, 190, 0.28);
+
+  border: 1px solid rgba(155, 115, 240, 0.4);
+}
+
+.materi-nav-button.primary:hover {
+  background: rgba(140, 90, 215, 0.4);
+
+  border-color: rgba(180, 145, 250, 0.55);
+
+  transform: translateY(-2px);
+}
+
+.materi-nav-button.secondary {
+  color: #c9c1d3;
+
+  background: rgba(255, 255, 255, 0.035);
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.materi-nav-button.secondary:hover {
+  color: #ffffff;
+
+  border-color: rgba(170, 135, 245, 0.35);
+
+  background: rgba(140, 100, 220, 0.1);
+
+  transform: translateY(-2px);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+  .topologi-page {
+    padding: 28px 5%;
+  }
+
+  .topologi-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .topologi-diagram {
+    height: 300px;
+  }
+}
+
+@media (max-width: 800px) {
+  .topologi-header h1 {
+    font-size: 34px;
+  }
+
+  .topologi-section-card {
+    padding: 24px;
+  }
+
+  .topologi-diagram {
+    height: 280px;
+  }
+}
+
+@media (max-width: 600px) {
+  .topologi-page {
+    padding: 22px 4%;
+  }
+
+  .topologi-top-navigation {
+    margin-bottom: 35px;
+  }
+
+  .topologi-header h1 {
+    font-size: 29px;
+  }
+
+  .topologi-header span {
+    font-size: 14px;
+  }
+
+  .topologi-video-section {
+    padding: 18px;
+  }
+
+  .topologi-video-heading {
+    gap: 11px;
+  }
+
+  .topologi-video-icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .topologi-video-heading h2 {
+    font-size: 19px;
+  }
+
+  .topologi-video-heading p {
+    font-size: 12px;
+  }
+
+  .topologi-intro-card {
+    padding: 23px;
+  }
+
+  .topologi-intro-card h2 {
+    font-size: 21px;
+  }
+
+  .topologi-intro-card p {
+    font-size: 13px;
+  }
+
+  .topologi-section-card {
+    padding: 20px;
+
+    flex-direction: column;
+
+    gap: 16px;
+  }
+
+  .topologi-section-number {
+    width: 44px;
+    height: 44px;
+  }
+
+  .topologi-section-content h2 {
+    font-size: 20px;
+  }
+
+  .topologi-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .topologi-diagram {
+    height: 230px;
+
+    margin-bottom: 20px;
+  }
+
+  .diagram-title {
+    font-size: 9px;
+
+    top: 10px;
+    left: 12px;
+  }
+
+  .network-text {
+    font-size: 18px;
+  }
+
+  .network-label {
+    font-size: 11px;
+  }
+
+  .topologi-tip-card {
+    padding: 20px;
+
+    gap: 15px;
+  }
+
+  .topologi-tip-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .materi-navigation {
+    height: 190px;
+  }
+
+  .materi-navigation .materi-nav-prev {
+    left: 0;
+    bottom: 20px;
+  }
+
+  .materi-navigation .materi-nav-next {
+    right: 0;
+    bottom: 20px;
+  }
+
+  .materi-download-button {
+    top: 0;
+  }
+
+  .materi-nav-button,
+  .materi-download-button {
+    font-size: 12px;
+
+    padding: 0 14px;
+  }
+}
