@@ -611,19 +611,38 @@ export default function TroubleshootLab() {
     return "DIAGNOSTIC MODE";
   }, [completed, scenario.id]);
 
-  useEffect(() => {
-    if (completed.length === SCENARIOS.length) {
-      const userId = localStorage.getItem("netlabUserId");
 
-      if (userId) {
-        updateActivityProgress(
-          Number(userId),
-          "troubleshoot-lab",
-          100
-        );
+
+useEffect(() => {
+  if (completed.length !== SCENARIOS.length) return;
+
+  const userId = localStorage.getItem("netlabUserId");
+  if (!userId) return;
+
+  let cancelled = false;
+
+  async function saveCompletion() {
+    try {
+      await updateActivityProgress(
+        userId,
+        "troubleshoot-lab",
+        100
+      );
+    } catch (error) {
+      if (!cancelled) {
+        console.error("Failed to save Troubleshoot Lab progress:", error);
       }
     }
-  }, [completed]);
+  }
+
+  saveCompletion();
+
+  return () => {
+    cancelled = true;
+  };
+}, [completed]);
+
+
 
   const addLog = (type, text) => {
     setLogs((prev) => [

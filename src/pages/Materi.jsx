@@ -33,27 +33,32 @@ function Materi() {
     }
   });
 
-  const handleMaterialClick = (
-    activityId,
-    activityName
-  ) => {
-    if (!userId) {
-      return;
-    }
+  const handleMaterialClick = async (activityId, activityName) => {
+  if (!userId) {
+    return;
+  }
 
-    updateActivityProgress(
-      Number(userId),
+    try {
+    // Simpan progress ke Supabase menggunakan UUID siswa
+    const success = await updateActivityProgress(
+      userId,
       activityId,
       100
     );
+
+    // Jangan tandai materi selesai jika progress gagal disimpan
+    if (!success) {
+      console.warn(
+        "Materi belum dapat diselesaikan. Selesaikan materi sebelumnya terlebih dahulu."
+      );
+      return;
+    }
 
     let allCompletedMaterials = {};
 
     try {
       allCompletedMaterials = JSON.parse(
-        localStorage.getItem(
-          "netlabCompletedMaterials"
-        ) || "{}"
+        localStorage.getItem("netlabCompletedMaterials") || "{}"
       );
     } catch {
       allCompletedMaterials = {};
@@ -76,8 +81,7 @@ function Materi() {
         activityId,
       ];
 
-      allCompletedMaterials[String(userId)] =
-        updatedMaterials;
+      allCompletedMaterials[String(userId)] = updatedMaterials;
 
       localStorage.setItem(
         "netlabCompletedMaterials",
@@ -91,7 +95,10 @@ function Materi() {
       "netlabLastActivity",
       activityName
     );
-  };
+  } catch (error) {
+    console.error("Failed to save material progress:", error);
+  }
+};
 
   const isCompleted = (activityId) => {
     return completedMaterials.includes(activityId);

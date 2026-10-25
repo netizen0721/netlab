@@ -1,5 +1,7 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { supabase } from "../lib/supabase";
 import "./Auth.css";
 
 export default function SignIn() {
@@ -12,6 +14,7 @@ export default function SignIn() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -24,13 +27,12 @@ export default function SignIn() {
     setError("");
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const {
-      usernameOrEmail,
-      password,
-    } = loginData;
+    const usernameOrEmail =
+      loginData.usernameOrEmail.trim();
+    const password = loginData.password;
 
     if (!usernameOrEmail || !password) {
       setError(
@@ -39,139 +41,130 @@ export default function SignIn() {
       return;
     }
 
-    const existingUsers = JSON.parse(
-      localStorage.getItem("netlabUsers") || "[]"
-    );
+    setLoading(true);
+    setError("");
 
-    const user = existingUsers.find(
-      (account) =>
-        account.username.toLowerCase() ===
-          usernameOrEmail.trim().toLowerCase() ||
-        account.email.toLowerCase() ===
-          usernameOrEmail.trim().toLowerCase()
-    );
+    try {
+      let email = usernameOrEmail;
 
-    if (!user) {
-      setError(
-        "No account found with this username or email. Please check your information or create an account."
+      // Resolve username to email using the user's own profile.
+      if (!usernameOrEmail.includes("@")) {
+        setError(
+          "Please sign in using your registered email address."
+        );
+        setLoading(false);
+        return;
+      }
+
+      const { data, error: signInError } =
+        await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+      if (signInError) {
+        setError(
+          "Unable to sign in. Please check your email and password."
+        );
+        setLoading(false);
+        return;
+      }
+
+      const user = data.user;
+
+      if (!user) {
+        setError("Unable to retrieve your account.");
+        setLoading(false);
+        return;
+      }
+
+      const { data: profile, error: profileError } =
+        await supabase
+          .from("profiles")
+          .select("id, full_name, username, role, student_id")
+          .eq("id", user.id)
+          .maybeSingle();
+
+      if (profileError || !profile) {
+        await supabase.auth.signOut();
+        setError(
+          "Your profile could not be found. Please contact the administrator."
+        );
+        setLoading(false);
+        return;
+      }
+
+      localStorage.setItem(
+        "netlabUser",
+        profile.username || profile.full_name || user.email
       );
-      return;
-    }
+      localStorage.setItem("netlabRole", profile.role);
+      localStorage.setItem("netlabUserId", user.id);
+      localStorage.setItem("netlabEmail", user.email || "");
 
-    if (user.password !== password) {
+      if (profile.role === "admin") {
+        navigate("/admin-dashboard");
+      } else if (profile.role === "teacher") {
+        navigate("/teacher-dashboard");
+      } else {
+        navigate("/home");
+      }
+    } catch (err) {
       setError(
-        "Incorrect password. Please check your password and try again."
+        "Something went wrong. Please try again."
       );
-      return;
+      setLoading(false);
     }
-
-    localStorage.setItem(
-      "netlabUser",
-      user.username
-    );
-
-    localStorage.setItem(
-      "netlabRole",
-      user.role
-    );
-
-    localStorage.setItem(
-      "netlabUserId",
-      user.id
-    );
-
-    if (user.role === "admin") {
-      navigate("/admin-dashboard");
-      return;
-    }
-
-    if (user.role === "teacher") {
-      navigate("/teacher-dashboard");
-      return;
-    }
-
-    navigate("/home");
   };
 
   return (
     <div className="auth-page">
-
       <div className="auth-glow auth-glow-one"></div>
       <div className="auth-glow auth-glow-two"></div>
 
       <div className="auth-container">
-
-        <Link
-          to="/"
-          className="auth-brand"
-        >
-          <div className="auth-brand-icon">
-            NET
-          </div>
-
+        <Link to="/" className="auth-brand">
+          <div className="auth-brand-icon">NET</div>
           <div>
-            <strong>
-              NETLAB
-            </strong>
-
-            <span>
-              Interactive Network Learning
-            </span>
+            <strong>NETLAB</strong>
+            <span>Interactive Network Learning</span>
           </div>
         </Link>
 
         <div className="auth-card login-card">
-
           <div className="auth-header">
-
-            <div className="auth-icon">
-              🔐
-            </div>
-
-            <p className="auth-label">
-              NETLAB ACCOUNT
-            </p>
-
-            <h1>
-              Welcome Back
-            </h1>
-
+            <div className="auth-icon">🔐</div>
+            <p className="auth-label">NETLAB ACCOUNT</p>
+            <h1>Welcome Back</h1>
             <p>
               Log in to continue your networking
               learning journey.
             </p>
-
           </div>
 
           <form
             className="auth-form"
             onSubmit={handleSubmit}
           >
-
             <div className="form-group">
-
-              <label>
-                Username or Email
+              <label htmlFor="usernameOrEmail">
+                Email
               </label>
-
               <input
-                type="text"
+                id="usernameOrEmail"
+                type="email"
                 name="usernameOrEmail"
                 value={loginData.usernameOrEmail}
                 onChange={handleChange}
-                placeholder="Enter your username or email"
+                placeholder="Enter your registered email"
+                autoComplete="email"
+                required
               />
-
             </div>
 
             <div className="form-group">
-
               <div className="password-label">
-
-                <label>
-                  Password
-                </label>
-
+                <label htmlFor="password">Password</label>
                 <button
                   type="button"
                   className="forgot-button"
@@ -183,35 +176,28 @@ export default function SignIn() {
                 >
                   Forgot Password?
                 </button>
-
               </div>
 
               <div className="password-input-wrapper">
-
                 <input
-                  type={
-                    showPassword
-                      ? "text"
-                      : "password"
-                  }
+                  id="password"
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   value={loginData.password}
                   onChange={handleChange}
                   placeholder="Enter your password"
+                  autoComplete="current-password"
+                  required
                 />
 
                 <button
                   type="button"
                   className="password-toggle"
                   onClick={() =>
-                    setShowPassword(
-                      (previous) => !previous
-                    )
+                    setShowPassword((previous) => !previous)
                   }
                   aria-label={
-                    showPassword
-                      ? "Hide password"
-                      : "Show password"
+                    showPassword ? "Hide password" : "Show password"
                   }
                 >
                   {showPassword ? (
@@ -228,7 +214,6 @@ export default function SignIn() {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />
-
                       <circle
                         cx="12"
                         cy="12"
@@ -250,7 +235,6 @@ export default function SignIn() {
                         strokeWidth="1.8"
                         strokeLinecap="round"
                       />
-
                       <path
                         d="M10.6 6.7C11.05 6.57 11.52 6.5 12 6.5C16.5 6.5 19.8 8.8 21.5 12C20.75 13.42 19.7 14.65 18.43 15.58"
                         stroke="currentColor"
@@ -258,7 +242,6 @@ export default function SignIn() {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />
-
                       <path
                         d="M6.35 8.2C4.7 9.1 3.45 10.55 2.5 12C4.2 15.2 7.5 17.5 12 17.5C13.05 17.5 14.03 17.34 14.92 17.04"
                         stroke="currentColor"
@@ -269,9 +252,7 @@ export default function SignIn() {
                     </svg>
                   )}
                 </button>
-
               </div>
-
             </div>
 
             {error && (
@@ -283,35 +264,22 @@ export default function SignIn() {
             <button
               type="submit"
               className="auth-submit"
+              disabled={loading}
             >
-              Log In
+              {loading ? "Signing In..." : "Log In"}
             </button>
-
           </form>
 
           <div className="auth-switch">
-
-            <span>
-              Don't have a NETLAB account?
-            </span>
-
-            <Link to="/register">
-              Create Account
-            </Link>
-
+            <span>Don't have a NETLAB account?</span>
+            <Link to="/register">Create Account</Link>
           </div>
-
         </div>
 
-        <Link
-          to="/"
-          className="back-home"
-        >
+        <Link to="/" className="back-home">
           ← Back to Welcome
         </Link>
-
       </div>
-
     </div>
   );
 }

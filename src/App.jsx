@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import {
   BrowserRouter,
@@ -10,7 +10,10 @@ import {
 import "./App.css";
 
 import { initializeUsers } from "./utils/initializeUsers";
-import { getTrackedLearningStatus } from "./utils/progressTracker";
+import {
+  getTrackedLearningStatus,
+  refreshTrackedProgress,
+} from "./utils/progressTracker";
 
 import Materi from "./pages/Materi";
 import DasarJaringan from "./pages/DasarJaringan";
@@ -48,15 +51,53 @@ function Home() {
     localStorage.getItem("netlabUser")
   );
 
-  const userId = localStorage.getItem(
-    "netlabUserId"
+  const [userId] = useState(
+    localStorage.getItem("netlabUserId")
   );
 
   const totalActivities = 9;
 
-  const learningStatus = userId
-    ? getTrackedLearningStatus(userId)
-    : null;
+  const [learningStatus, setLearningStatus] = useState(() =>
+    userId ? getTrackedLearningStatus(userId) : null
+  );
+
+  useEffect(() => {
+    if (!userId) {
+      setLearningStatus(null);
+      return;
+    }
+
+    let cancelled = false;
+
+    async function loadProgress() {
+      try {
+        await refreshTrackedProgress(userId);
+
+        if (!cancelled) {
+          setLearningStatus(
+            getTrackedLearningStatus(userId)
+          );
+        }
+      } catch (error) {
+        console.error(
+          "Failed to load learning progress from Supabase:",
+          error
+        );
+
+        if (!cancelled) {
+          setLearningStatus(
+            getTrackedLearningStatus(userId)
+          );
+        }
+      }
+    }
+
+    loadProgress();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [userId]);
 
   const completedActivities = learningStatus
     ? learningStatus.completedCount
@@ -66,22 +107,18 @@ function Home() {
     ? learningStatus.progress
     : 0;
 
-  const lastActivity = localStorage.getItem(
-    "netlabLastActivity"
-  );
-
   const handleSignOut = () => {
     localStorage.removeItem("netlabUser");
     localStorage.removeItem("netlabRole");
     localStorage.removeItem("netlabUserId");
+    localStorage.removeItem("netlabEmail");
+
     window.location.href = "/";
   };
 
   return (
     <div>
-      {/* =========================
-          NAVBAR
-          ========================= */}
+      {/* NAVBAR */}
 
       <nav>
         <div className="navbar-left">
@@ -98,41 +135,15 @@ function Home() {
         </div>
 
         <div className="nav-links">
-          <Link to="/home">
-            Home
-          </Link>
-
-          <Link to="/materi">
-            Materials
-          </Link>
-
-          <Link to="/ar-hardware">
-            3D Lab
-          </Link>
-
-          <Link to="/network-lab">
-            Network Lab
-          </Link>
-
-          <Link to="/cable-lab">
-            Cable Lab
-          </Link>
-
-          <Link to="/troubleshoot-lab">
-            Troubleshoot Lab
-          </Link>
-
-          <Link to="/challenge">
-            Challenge
-          </Link>
-
-          <Link to="/pre-test">
-            Pre-Test
-          </Link>
-
-          <Link to="/post-test">
-            Post-Test
-          </Link>
+          <Link to="/home">Home</Link>
+          <Link to="/materi">Materials</Link>
+          <Link to="/ar-hardware">3D Lab</Link>
+          <Link to="/network-lab">Network Lab</Link>
+          <Link to="/cable-lab">Cable Lab</Link>
+          <Link to="/troubleshoot-lab">Troubleshoot Lab</Link>
+          <Link to="/challenge">Challenge</Link>
+          <Link to="/pre-test">Pre-Test</Link>
+          <Link to="/post-test">Post-Test</Link>
 
           {username ? (
             <span className="user-nav">
@@ -149,9 +160,7 @@ function Home() {
         </div>
       </nav>
 
-      {/* =========================
-          SIDEBAR DASHBOARD
-          ========================= */}
+      {/* SIDEBAR DASHBOARD */}
 
       {menuOpen && (
         <>
@@ -161,18 +170,12 @@ function Home() {
           ></div>
 
           <aside className="sidebar">
-
             {/* SIDEBAR HEADER */}
 
             <div className="sidebar-header">
               <div>
-                <strong>
-                  🌐 NETLAB
-                </strong>
-
-                <span>
-                  Interactive Network Learning
-                </span>
+                <strong>🌐 NETLAB</strong>
+                <span>Interactive Network Learning</span>
               </div>
 
               <button
@@ -185,29 +188,17 @@ function Home() {
             {/* PROFILE */}
 
             <div className="dashboard-profile">
-              <div className="profile-avatar">
-                👤
-              </div>
+              <div className="profile-avatar">👤</div>
 
               {username ? (
                 <>
-                  <h3>
-                    Hi, {username}! 👋
-                  </h3>
-
-                  <p>
-                    NETLAB Student
-                  </p>
+                  <h3>Hi, {username}! 👋</h3>
+                  <p>NETLAB Student</p>
                 </>
               ) : (
                 <>
-                  <h3>
-                    Hi, Student! 👋
-                  </h3>
-
-                  <p>
-                    Not Signed In
-                  </p>
+                  <h3>Hi, Student! 👋</h3>
+                  <p>Not Signed In</p>
                 </>
               )}
             </div>
@@ -220,21 +211,17 @@ function Home() {
                   🔐
                 </div>
 
-                <h4>
-                  Not Signed In
-                </h4>
+                <h4>Not Signed In</h4>
 
                 <p>
-                  Sign in to save your progress
-                  and view your learning activity.
+                  Sign in to save your progress and view
+                  your learning activity.
                 </p>
 
                 <Link
                   to="/sign-in"
                   className="dashboard-signin"
-                  onClick={() =>
-                    setMenuOpen(false)
-                  }
+                  onClick={() => setMenuOpen(false)}
                 >
                   Sign In →
                 </Link>
@@ -248,8 +235,6 @@ function Home() {
                 YOUR LEARNING
               </div>
 
-              {/* PROGRESS */}
-
               <Link
                 to="/progress"
                 className="dashboard-progress"
@@ -261,13 +246,8 @@ function Home() {
                   </div>
 
                   <div>
-                    <strong>
-                      Learning Progress
-                    </strong>
-
-                    <span>
-                      Your learning progress
-                    </span>
+                    <strong>Learning Progress</strong>
+                    <span>Your learning progress</span>
                   </div>
                 </div>
 
@@ -286,9 +266,7 @@ function Home() {
                           {totalActivities}
                         </strong>
 
-                        <span>
-                          activities completed
-                        </span>
+                        <span>activities completed</span>
                       </div>
                     </div>
 
@@ -325,50 +303,35 @@ function Home() {
                   className="signout-button"
                   onClick={handleSignOut}
                 >
-                  <span>
-                    🚪
-                  </span>
-
+                  <span>🚪</span>
                   Sign Out
                 </button>
               ) : (
                 <div className="sidebar-footer-text">
-                  <span>
-                    NETLAB
-                  </span>
-
-                  <small>
-                    Learn. Explore. Connect.
-                  </small>
+                  <span>NETLAB</span>
+                  <small>Learn. Explore. Connect.</small>
                 </div>
               )}
             </div>
-
           </aside>
         </>
       )}
 
-      {/* =========================
-          HERO
-          ========================= */}
+      {/* HERO */}
 
       <main className="hero">
         <div className="hero-text">
-
           <p className="hero-label">
             🌐 INTERACTIVE NETWORK LEARNING
           </p>
 
           <h1>
-            Build Your{" "}
-            <span>
-              Network.
-            </span>
+            Build Your <span>Network.</span>
           </h1>
 
           <p className="hero-description">
-            Learn computer networking through
-            simulations and interactive experiences.
+            Learn computer networking through simulations
+            and interactive experiences.
           </p>
 
           <Link
@@ -377,7 +340,6 @@ function Home() {
           >
             Start Learning →
           </Link>
-
         </div>
 
         {/* NETWORK LOGO */}
@@ -389,131 +351,75 @@ function Home() {
             className="network-logo"
           />
         </div>
-
       </main>
 
-      {/* =========================
-          FEATURES
-          ========================= */}
+      {/* FEATURES */}
 
       <section className="features">
-
         <div className="section-title">
-          <p>
-            EXPLORE NETLAB
-          </p>
-
-          <h2>
-            Learn in a Different Way
-          </h2>
+          <p>EXPLORE NETLAB</p>
+          <h2>Learn in a Different Way</h2>
         </div>
 
         <div className="feature-grid">
-
           {/* MATERIALS */}
 
           <div className="feature-card">
-            <div className="feature-icon">
-              📚
-            </div>
-
-            <h3>
-              Materials
-            </h3>
-
+            <div className="feature-icon">📚</div>
+            <h3>Materials</h3>
             <p>
               Learn the fundamentals of networking,
               network devices, topologies, and LAN
               cables through easy-to-understand materials.
             </p>
-
-            <Link to="/materi">
-              Learn Materials →
-            </Link>
+            <Link to="/materi">Learn Materials →</Link>
           </div>
 
           {/* 3D LAB */}
 
           <div className="feature-card">
-            <div className="feature-icon">
-              📱
-            </div>
-
-            <h3>
-              3D Lab
-            </h3>
-
+            <div className="feature-icon">📱</div>
+            <h3>3D Lab</h3>
             <p>
-              Explore various network devices
-              through an interactive 3D
-              learning experience.
+              Explore various network devices through
+              an interactive 3D learning experience.
             </p>
-
-            <Link to="/ar-hardware">
-              Explore 3D Lab →
-            </Link>
+            <Link to="/ar-hardware">Explore 3D Lab →</Link>
           </div>
 
           {/* NETWORK LAB */}
 
           <div className="feature-card">
-            <div className="feature-icon">
-              🌐
-            </div>
-
-            <h3>
-              Network Lab
-            </h3>
-
+            <div className="feature-icon">🌐</div>
+            <h3>Network Lab</h3>
             <p>
               Simulate different network topologies
               and connect devices interactively.
             </p>
-
-            <Link to="/network-lab">
-              Start Simulation →
-            </Link>
+            <Link to="/network-lab">Start Simulation →</Link>
           </div>
 
           {/* CABLE LAB */}
 
           <div className="feature-card">
-            <div className="feature-icon">
-              🔌
-            </div>
-
-            <h3>
-              Cable Lab
-            </h3>
-
+            <div className="feature-icon">🔌</div>
+            <h3>Cable Lab</h3>
             <p>
-              Learn how to arrange LAN cables
-              by matching cable colors to the
-              correct RJ45 positions.
+              Learn how to arrange LAN cables by matching
+              cable colors to the correct RJ45 positions.
             </p>
-
-            <Link to="/cable-lab">
-              Build Cable →
-            </Link>
+            <Link to="/cable-lab">Build Cable →</Link>
           </div>
 
           {/* TROUBLESHOOT LAB */}
 
           <div className="feature-card">
-            <div className="feature-icon">
-              🔧
-            </div>
-
-            <h3>
-              Troubleshoot Lab
-            </h3>
-
+            <div className="feature-icon">🔧</div>
+            <h3>Troubleshoot Lab</h3>
             <p>
-              Find and fix network problems
-              through hands-on troubleshooting
-              simulations.
+              Find and fix network problems through
+              hands-on troubleshooting simulations.
             </p>
-
             <Link to="/troubleshoot-lab">
               Start Troubleshooting →
             </Link>
@@ -522,104 +428,63 @@ function Home() {
           {/* CHALLENGE */}
 
           <div className="feature-card">
-            <div className="feature-icon">
-              🧠
-            </div>
-
-            <h3>
-              Challenge
-            </h3>
-
+            <div className="feature-icon">🧠</div>
+            <h3>Challenge</h3>
             <p>
-              Test your understanding through
-              quizzes and various learning
-              challenges.
+              Test your understanding through quizzes
+              and various learning challenges.
             </p>
-
-            <Link to="/challenge">
-              Start Challenge →
-            </Link>
+            <Link to="/challenge">Start Challenge →</Link>
           </div>
 
           {/* PRE-TEST */}
 
           <div className="feature-card">
-            <div className="feature-icon">
-              📝
-            </div>
-
-            <h3>
-              Pre-Test
-            </h3>
-
+            <div className="feature-icon">📝</div>
+            <h3>Pre-Test</h3>
             <p>
               Test your initial knowledge before
               learning networking materials.
             </p>
-
-            <Link to="/pre-test">
-              Start Pre-Test →
-            </Link>
+            <Link to="/pre-test">Start Pre-Test →</Link>
           </div>
 
           {/* POST-TEST */}
 
           <div className="feature-card">
-            <div className="feature-icon">
-              🎯
-            </div>
-
-            <h3>
-              Post-Test
-            </h3>
-
+            <div className="feature-icon">🎯</div>
+            <h3>Post-Test</h3>
             <p>
-              Test your understanding after
-              completing the networking lessons.
+              Test your understanding after completing
+              the networking lessons.
             </p>
-
-            <Link to="/post-test">
-              Start Post-Test →
-            </Link>
+            <Link to="/post-test">Start Post-Test →</Link>
           </div>
-
         </div>
       </section>
 
-      {/* =========================
-          PROGRESS SECTION
-          ========================= */}
+      {/* PROGRESS SECTION */}
 
       <section className="progress-section">
-
         <div className="progress-content">
-
           <div>
             <p className="progress-label">
               YOUR PROGRESS
             </p>
 
-            <h2>
-              Your Learning Journey
-            </h2>
+            <h2>Your Learning Journey</h2>
 
             <p className="progress-description">
-              Continue your learning journey and
-              complete various activities to
-              develop your networking skills.
+              Continue your learning journey and complete
+              various activities to develop your
+              networking skills.
             </p>
           </div>
 
           <div className="progress-card">
-
             <div className="progress-top">
-              <span>
-                Learning Progress
-              </span>
-
-              <strong>
-                {progressPercentage}%
-              </strong>
+              <span>Learning Progress</span>
+              <strong>{progressPercentage}%</strong>
             </div>
 
             <div className="progress-bar">
@@ -632,44 +497,31 @@ function Home() {
             </div>
 
             <p>
-              {completedActivities} of{" "}
-              {totalActivities} activities completed
+              {completedActivities} of {totalActivities}{" "}
+              activities completed
             </p>
-
           </div>
-
         </div>
       </section>
 
-      {/* =========================
-          FOOTER
-          ========================= */}
+      {/* FOOTER */}
 
       <footer>
-
         <div>
-          <h3>
-            NETLAB
-          </h3>
-
-          <p>
-            Interactive Network Learning
-          </p>
+          <h3>NETLAB</h3>
+          <p>Interactive Network Learning</p>
         </div>
 
         <p>
-         © 2026 PTI2025B NETLAB. An interactive platform for network learning.
+          © 2026 PTI2025B NETLAB. An interactive platform
+          for network learning.
         </p>
-
       </footer>
-
     </div>
   );
 }
 
-/* =========================
-   APP ROUTES
-   ========================= */
+/* APP ROUTES */
 
 function App() {
   return (
@@ -677,7 +529,6 @@ function App() {
       <ScrollToTop />
 
       <Routes>
-
         {/* WELCOME */}
 
         <Route
@@ -688,9 +539,7 @@ function App() {
         <Route
           path="/home"
           element={
-            <ProtectedRoute
-              allowedRoles={["student"]}
-            >
+            <ProtectedRoute allowedRoles={["student"]}>
               <Home />
             </ProtectedRoute>
           }
@@ -711,9 +560,7 @@ function App() {
         <Route
           path="/admin-dashboard"
           element={
-            <ProtectedRoute
-              allowedRoles={["admin"]}
-            >
+            <ProtectedRoute allowedRoles={["admin"]}>
               <AdminDashboard />
             </ProtectedRoute>
           }
@@ -722,9 +569,7 @@ function App() {
         <Route
           path="/teacher-dashboard"
           element={
-            <ProtectedRoute
-              allowedRoles={["teacher"]}
-            >
+            <ProtectedRoute allowedRoles={["teacher"]}>
               <TeacherDashboard />
             </ProtectedRoute>
           }
@@ -830,7 +675,6 @@ function App() {
           path="/progress"
           element={<Progress />}
         />
-
       </Routes>
     </BrowserRouter>
   );
