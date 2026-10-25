@@ -61,12 +61,6 @@ function Home() {
     userId ? getTrackedLearningStatus(userId) : null
   );
 
-  useEffect(() => {
-    if (!userId) {
-      setLearningStatus(null);
-      return;
-    }
-
     let cancelled = false;
 
     async function loadProgress() {

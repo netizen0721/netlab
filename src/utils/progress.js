@@ -1,4 +1,3 @@
-
 import { supabase } from "../lib/supabase";
 
 const PROGRESS_KEY = "netlabProgress";
@@ -19,6 +18,19 @@ export function getActivities() {
   return activities;
 }
 
+function validateUserId(userId) {
+  if (
+    typeof userId !== "string" ||
+    !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+      userId
+    )
+  ) {
+    throw new Error(
+      "ID siswa bukan UUID Supabase. Silakan login ulang menggunakan akun yang valid."
+    );
+  }
+}
+
 function getLocalProgress() {
   try {
     const data = JSON.parse(localStorage.getItem(PROGRESS_KEY) || "[]");
@@ -33,7 +45,9 @@ function saveLocalProgress(data) {
 }
 
 function mapDatabaseProgress(row) {
-  const activity = activities.find((item) => item.id === row.activity_key);
+  const activity = activities.find(
+    (item) => item.id === row.activity_key
+  );
 
   if (!activity) return null;
 
@@ -42,7 +56,8 @@ function mapDatabaseProgress(row) {
     activityId: row.activity_key,
     title: activity.title,
     type: activity.type,
-    order: activities.findIndex((item) => item.id === row.activity_key) + 1,
+    order:
+      activities.findIndex((item) => item.id === row.activity_key) + 1,
     status: row.completed
       ? "completed"
       : row.progress_percent > 0
@@ -64,21 +79,20 @@ function cacheStudentProgress(userId, studentRows) {
     .sort((a, b) => a.order - b.order);
 
   saveLocalProgress([...otherUsers, ...sortedRows]);
+
   return sortedRows;
 }
 
 function normalizeProgress(value) {
   const number = Number(value);
+
   if (!Number.isFinite(number)) return 0;
+
   return Math.min(100, Math.max(0, Math.round(number)));
 }
 
-/**
- * Mengambil progress terbaru siswa dari Supabase
- * sekaligus memperbarui cache localStorage.
- */
 export async function refreshStudentProgress(userId) {
-  if (!userId) return [];
+  validateUserId(userId);
 
   const { data, error } = await supabase
     .from("learning_progress")
@@ -86,21 +100,15 @@ export async function refreshStudentProgress(userId) {
     .eq("user_id", userId);
 
   if (error) {
-    console.error("Gagal mengambil progress Supabase:", error.message);
+    console.error("Gagal mengambil progress Supabase:", error);
     throw error;
   }
 
   return cacheStudentProgress(userId, data || []);
 }
 
-/**
- * Membuat 9 aktivitas untuk siswa baru.
- * Aktivitas yang sudah ada tidak akan di-reset.
- */
 export async function initializeStudentProgress(userId) {
-  if (!userId) {
-    throw new Error("UUID siswa tidak ditemukan. Silakan login kembali.");
-  }
+  validateUserId(userId);
 
   const rows = activities.map((activity) => ({
     user_id: userId,
@@ -117,18 +125,13 @@ export async function initializeStudentProgress(userId) {
     });
 
   if (error) {
-    console.error("Gagal membuat progress siswa:", error.message);
+    console.error("Gagal membuat progress siswa:", error);
     throw error;
   }
 
   return refreshStudentProgress(userId);
 }
 
-/**
- * Membaca cache progress secara sinkron.
- * Panggil refreshStudentProgress(userId) terlebih dahulu
- * saat halaman dibuka agar cache berasal dari Supabase.
- */
 export function getStudentProgress(userId) {
   if (!userId) return [];
 
@@ -137,21 +140,20 @@ export function getStudentProgress(userId) {
     .sort((a, b) => a.order - b.order);
 }
 
-/**
- * Menyimpan progress ke Supabase.
- * Aktivitas berikutnya hanya dapat diselesaikan jika
- * aktivitas sebelumnya sudah selesai.
- */
-export async function updateActivityProgress(userId, activityId, progressValue) {
-  if (!userId) {
-    throw new Error("UUID siswa tidak ditemukan. Silakan login kembali.");
-  }
+export async function updateActivityProgress(
+  userId,
+  activityId,
+  progressValue
+) {
+  validateUserId(userId);
 
   const currentIndex = activities.findIndex(
     (activity) => activity.id === activityId
   );
 
-  if (currentIndex === -1) return false;
+  if (currentIndex === -1) {
+    throw new Error(`Aktivitas tidak ditemukan: ${activityId}`);
+  }
 
   const progress = normalizeProgress(progressValue);
 
@@ -161,22 +163,41 @@ export async function updateActivityProgress(userId, activityId, progressValue) 
     .eq("user_id", userId);
 
   if (fetchError) {
-    console.error("Gagal memeriksa urutan progress:", fetchError.message);
+    console.error("Gagal memeriksa urutan progress:", fetchError);
     throw fetchError;
   }
 
-  const currentRows = rows || [];
+  let currentRows = rows || [];
+
+  if (currentRows.length === 0) {
+    await initializeStudentProgress(userId);
+
+    const { data: refreshedRows, error: refreshedError } = await supabase
+      .from("learning_progress")
+      .select("user_id, activity_key, progress_percent, completed, updated_at")
+      .eq("user_id", userId);
+
+    if (refreshedError) {
+      console.error("Gagal membaca ulang progress:", refreshedError);
+      throw refreshedError;
+    }
+
+    currentRows = refreshedRows || [];
+  }
+
   const currentRow = currentRows.find(
     (row) => row.activity_key === activityId
   );
 
   if (!currentRow) {
-    await initializeStudentProgress(userId);
-    return updateActivityProgress(userId, activityId, progressValue);
+    throw new Error(
+      `Data aktivitas ${activityId} belum tersedia di Supabase.`
+    );
   }
 
   if (currentIndex > 0) {
     const previousActivity = activities[currentIndex - 1];
+
     const previousRow = currentRows.find(
       (row) => row.activity_key === previousActivity.id
     );
@@ -196,20 +217,24 @@ export async function updateActivityProgress(userId, activityId, progressValue) 
         completed: progress >= 100,
         updated_at: new Date().toISOString(),
       },
-      { onConflict: "user_id,activity_key" }
+      {
+        onConflict: "user_id,activity_key",
+      }
     );
 
   if (updateError) {
-    console.error("Gagal menyimpan progress:", updateError.message);
+    console.error("Gagal menyimpan progress:", updateError);
     throw updateError;
   }
 
   await refreshStudentProgress(userId);
+
   return true;
 }
 
 export function calculateOverallProgress(userId) {
   const studentProgress = getStudentProgress(userId);
+
   if (studentProgress.length === 0) return 0;
 
   const completedCount = studentProgress.filter(
@@ -255,6 +280,7 @@ export function getNextActivity(userId) {
 
 export function getStudentLearningStatus(userId) {
   const studentProgress = getStudentProgress(userId);
+
   const completedCount = studentProgress.filter(
     (item) => item.status === "completed"
   ).length;
