@@ -238,3 +238,4 @@ export function isActivityUnlocked(userId, activityId) {
 export function getTrackedLearningStatus(userId) {
   const activities = getTrackedProgress(userId);
   const completedCount = getTrackedCompleted
+}
