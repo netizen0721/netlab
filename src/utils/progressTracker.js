@@ -68,8 +68,7 @@ function getCachedActivity(userId, activityId) {
   );
 }
 
-// Memeriksa penyelesaian berdasarkan progress Supabase yang
-// sudah disalin ke cache oleh progress.js
+// Memeriksa apakah aktivitas sudah selesai
 function isProgressCompleted(userId, activityId) {
   const item = getCachedActivity(userId, activityId);
 
@@ -82,19 +81,12 @@ function isProgressCompleted(userId, activityId) {
   );
 }
 
-// Mempertahankan dukungan data materi lama selama migrasi.
-// Progress Supabase tetap menjadi sumber utama setelah cache diperbarui.
+// Menggabungkan data progress dan data materi lama
 function isActivityCompletedForUser(userId, activityId) {
-  const progressCompleted = isProgressCompleted(
-    userId,
-    activityId
+  return (
+    isProgressCompleted(userId, activityId) ||
+    isMaterialCompleted(userId, activityId)
   );
-
-  if (progressCompleted) {
-    return true;
-  }
-
-  return isMaterialCompleted(userId, activityId);
 }
 
 // Menghasilkan daftar aktivitas beserta statusnya
@@ -122,16 +114,14 @@ export function getTrackedProgress(userId) {
     const completed =
       savedProgress?.status === "completed" ||
       Number(savedProgress?.progress) >= 100 ||
-      isMaterialCompletedForUser(userId, activity.id);
+      isActivityCompletedForUser(userId, activity.id);
 
     return {
       activityId: activity.id,
       title: activity.title,
       type: activity.type,
       order: index + 1,
-      status: completed
-        ? "completed"
-        : "not-started",
+      status: completed ? "completed" : "not-started",
       progress: completed
         ? 100
         : Number(savedProgress?.progress) || 0,
@@ -169,7 +159,7 @@ export function getTrackedCompletedCount(userId) {
   ).length;
 }
 
-// Persentase keseluruhan berdasarkan jumlah aktivitas selesai
+// Persentase keseluruhan progress
 export function getTrackedOverallProgress(userId) {
   const activities = getActivities();
 
@@ -188,14 +178,12 @@ export function getTrackedLastActivity(userId) {
     (activity) => activity.status === "completed"
   );
 
-  if (completed.length === 0) {
-    return null;
-  }
-
-  return completed[completed.length - 1];
+  return completed.length > 0
+    ? completed[completed.length - 1]
+    : null;
 }
 
-// Aktivitas yang sedang tersedia untuk dikerjakan
+// Aktivitas yang sedang tersedia
 export function getTrackedCurrentActivity(userId) {
   return (
     getTrackedProgress(userId).find(
@@ -234,8 +222,89 @@ export function isActivityUnlocked(userId, activityId) {
   );
 }
 
-// Mengambil ringkasan progress siswa
+// Ringkasan progress siswa
 export function getTrackedLearningStatus(userId) {
   const activities = getTrackedProgress(userId);
-  const completedCount = getTrackedCompleted
+  const completedCount = getTrackedCompletedCount(userId);
+  const progress = getTrackedOverallProgress(userId);
+
+  return {
+    progress,
+    completedCount,
+    totalActivities: activities.length,
+    lastActivity: getTrackedLastActivity(userId),
+    currentActivity: getTrackedCurrentActivity(userId),
+    nextActivity: getTrackedNextActivity(userId),
+    completed:
+      activities.length > 0 &&
+      completedCount === activities.length,
+    activities,
+  };
+}
+
+// Mengambil data terbaru dari Supabase dan memperbarui cache
+export async function refreshTrackedProgress(userId) {
+  if (!userId) {
+    return [];
+  }
+
+  await refreshStudentProgress(userId);
+
+  return getTrackedProgress(userId);
+}
+
+// Sinkronisasi cache lokal untuk kompatibilitas dengan data lama
+export function syncLegacyProgress(userId) {
+  if (!userId) {
+    return [];
+  }
+
+  const activities = getActivities();
+  const existing = getProgressData();
+
+  const otherUsers = existing.filter(
+    (item) => String(item.userId) !== String(userId)
+  );
+
+  const studentProgress = getStudentProgress(userId);
+
+  const synced = activities.map((activity, index) => {
+    const savedProgress = studentProgress.find(
+      (item) => item.activityId === activity.id
+    );
+
+    const completed =
+      savedProgress?.status === "completed" ||
+      Number(savedProgress?.progress) >= 100 ||
+      isMaterialCompleted(userId, activity.id);
+
+    return {
+      userId: String(userId),
+      activityId: activity.id,
+      title: activity.title,
+      type: activity.type,
+      order: index + 1,
+      status: completed
+        ? "completed"
+        : savedProgress?.status || "not-started",
+      progress: completed
+        ? 100
+        : Number(savedProgress?.progress) || 0,
+      completedAt: completed
+        ? savedProgress?.completedAt || new Date().toISOString()
+        : null,
+    };
+  });
+
+  localStorage.setItem(
+    PROGRESS_KEY,
+    JSON.stringify([...otherUsers, ...synced])
+  );
+
+  return synced;
+}
+
+// Membaca aktivitas terakhir dari data lama
+export function getLastLegacyActivity() {
+  return localStorage.getItem(LEGACY_LAST_ACTIVITY_KEY);
 }
