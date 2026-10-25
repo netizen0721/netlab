@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-
 import {
   BrowserRouter,
   Routes,
@@ -46,12 +45,10 @@ initializeUsers();
 
 function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
-
-  const [username] = useState(
+  const [username] = useState(() =>
     localStorage.getItem("netlabUser")
   );
-
-  const [userId] = useState(
+  const [userId] = useState(() =>
     localStorage.getItem("netlabUserId")
   );
 
@@ -61,16 +58,23 @@ function Home() {
     userId ? getTrackedLearningStatus(userId) : null
   );
 
+  useEffect(() => {
     let cancelled = false;
+
+    if (!userId) {
+      setLearningStatus(null);
+
+      return () => {
+        cancelled = true;
+      };
+    }
 
     async function loadProgress() {
       try {
         await refreshTrackedProgress(userId);
 
         if (!cancelled) {
-          setLearningStatus(
-            getTrackedLearningStatus(userId)
-          );
+          setLearningStatus(getTrackedLearningStatus(userId));
         }
       } catch (error) {
         console.error(
@@ -79,9 +83,7 @@ function Home() {
         );
 
         if (!cancelled) {
-          setLearningStatus(
-            getTrackedLearningStatus(userId)
-          );
+          setLearningStatus(getTrackedLearningStatus(userId));
         }
       }
     }
@@ -112,8 +114,6 @@ function Home() {
 
   return (
     <div>
-      {/* NAVBAR */}
-
       <nav>
         <div className="navbar-left">
           <button
@@ -140,46 +140,33 @@ function Home() {
           <Link to="/post-test">Post-Test</Link>
 
           {username ? (
-            <span className="user-nav">
-              👤 {username}
-            </span>
+            <span className="user-nav">👤 {username}</span>
           ) : (
-            <Link
-              to="/sign-in"
-              className="signin-nav"
-            >
+            <Link to="/sign-in" className="signin-nav">
               👤 Sign In
             </Link>
           )}
         </div>
       </nav>
 
-      {/* SIDEBAR DASHBOARD */}
-
       {menuOpen && (
         <>
           <div
             className="sidebar-overlay"
             onClick={() => setMenuOpen(false)}
-          ></div>
+          />
 
           <aside className="sidebar">
-            {/* SIDEBAR HEADER */}
-
             <div className="sidebar-header">
               <div>
                 <strong>🌐 NETLAB</strong>
                 <span>Interactive Network Learning</span>
               </div>
 
-              <button
-                onClick={() => setMenuOpen(false)}
-              >
+              <button onClick={() => setMenuOpen(false)}>
                 ✕
               </button>
             </div>
-
-            {/* PROFILE */}
 
             <div className="dashboard-profile">
               <div className="profile-avatar">👤</div>
@@ -196,8 +183,6 @@ function Home() {
                 </>
               )}
             </div>
-
-            {/* SIGN IN MESSAGE */}
 
             {!username && (
               <div className="dashboard-message">
@@ -221,8 +206,6 @@ function Home() {
                 </Link>
               </div>
             )}
-
-            {/* LEARNING DASHBOARD */}
 
             <div className="dashboard-info">
               <div className="dashboard-label">
@@ -249,17 +232,13 @@ function Home() {
                   <>
                     <div className="progress-main">
                       <div className="progress-circle">
-                        <strong>
-                          {progressPercentage}%
-                        </strong>
+                        <strong>{progressPercentage}%</strong>
                       </div>
 
                       <div className="progress-info">
                         <strong>
-                          {completedActivities} of{" "}
-                          {totalActivities}
+                          {completedActivities} of {totalActivities}
                         </strong>
-
                         <span>activities completed</span>
                       </div>
                     </div>
@@ -270,15 +249,15 @@ function Home() {
                         style={{
                           width: `${progressPercentage}%`,
                         }}
-                      ></div>
+                      />
                     </div>
 
                     <p className="progress-status">
                       {progressPercentage === 100
                         ? "All activities completed! 🎉"
                         : progressPercentage > 0
-                        ? "Keep learning! 🚀"
-                        : "Start your learning journey! 🚀"}
+                          ? "Keep learning! 🚀"
+                          : "Start your learning journey! 🚀"}
                     </p>
                   </>
                 ) : (
@@ -288,8 +267,6 @@ function Home() {
                 )}
               </Link>
             </div>
-
-            {/* SIDEBAR BOTTOM */}
 
             <div className="sidebar-bottom">
               {username ? (
@@ -311,8 +288,6 @@ function Home() {
         </>
       )}
 
-      {/* HERO */}
-
       <main className="hero">
         <div className="hero-text">
           <p className="hero-label">
@@ -328,15 +303,10 @@ function Home() {
             and interactive experiences.
           </p>
 
-          <Link
-            to="/materi"
-            className="hero-button"
-          >
+          <Link to="/materi" className="hero-button">
             Start Learning →
           </Link>
         </div>
-
-        {/* NETWORK LOGO */}
 
         <div className="hero-card">
           <img
@@ -347,8 +317,6 @@ function Home() {
         </div>
       </main>
 
-      {/* FEATURES */}
-
       <section className="features">
         <div className="section-title">
           <p>EXPLORE NETLAB</p>
@@ -356,44 +324,36 @@ function Home() {
         </div>
 
         <div className="feature-grid">
-          {/* MATERIALS */}
-
           <div className="feature-card">
             <div className="feature-icon">📚</div>
             <h3>Materials</h3>
             <p>
-              Learn the fundamentals of networking,
-              network devices, topologies, and LAN
-              cables through easy-to-understand materials.
+              Learn the fundamentals of networking, network
+              devices, topologies, and LAN cables through
+              easy-to-understand materials.
             </p>
             <Link to="/materi">Learn Materials →</Link>
           </div>
-
-          {/* 3D LAB */}
 
           <div className="feature-card">
             <div className="feature-icon">📱</div>
             <h3>3D Lab</h3>
             <p>
-              Explore various network devices through
-              an interactive 3D learning experience.
+              Explore various network devices through an
+              interactive 3D learning experience.
             </p>
             <Link to="/ar-hardware">Explore 3D Lab →</Link>
           </div>
-
-          {/* NETWORK LAB */}
 
           <div className="feature-card">
             <div className="feature-icon">🌐</div>
             <h3>Network Lab</h3>
             <p>
-              Simulate different network topologies
-              and connect devices interactively.
+              Simulate different network topologies and
+              connect devices interactively.
             </p>
             <Link to="/network-lab">Start Simulation →</Link>
           </div>
-
-          {/* CABLE LAB */}
 
           <div className="feature-card">
             <div className="feature-icon">🔌</div>
@@ -404,8 +364,6 @@ function Home() {
             </p>
             <Link to="/cable-lab">Build Cable →</Link>
           </div>
-
-          {/* TROUBLESHOOT LAB */}
 
           <div className="feature-card">
             <div className="feature-icon">🔧</div>
@@ -419,59 +377,49 @@ function Home() {
             </Link>
           </div>
 
-          {/* CHALLENGE */}
-
           <div className="feature-card">
             <div className="feature-icon">🧠</div>
             <h3>Challenge</h3>
             <p>
-              Test your understanding through quizzes
-              and various learning challenges.
+              Test your understanding through quizzes and
+              various learning challenges.
             </p>
             <Link to="/challenge">Start Challenge →</Link>
           </div>
-
-          {/* PRE-TEST */}
 
           <div className="feature-card">
             <div className="feature-icon">📝</div>
             <h3>Pre-Test</h3>
             <p>
-              Test your initial knowledge before
-              learning networking materials.
+              Test your initial knowledge before learning
+              networking materials.
             </p>
             <Link to="/pre-test">Start Pre-Test →</Link>
           </div>
-
-          {/* POST-TEST */}
 
           <div className="feature-card">
             <div className="feature-icon">🎯</div>
             <h3>Post-Test</h3>
             <p>
-              Test your understanding after completing
-              the networking lessons.
+              Test your understanding after completing the
+              networking lessons.
             </p>
             <Link to="/post-test">Start Post-Test →</Link>
           </div>
         </div>
       </section>
 
-      {/* PROGRESS SECTION */}
-
       <section className="progress-section">
         <div className="progress-content">
           <div>
-            <p className="progress-label">
-              YOUR PROGRESS
-            </p>
+            <p className="progress-label">YOUR PROGRESS</p>
 
             <h2>Your Learning Journey</h2>
 
             <p className="progress-description">
               Continue your learning journey and complete
-              various activities to develop your
-              networking skills.
+              various activities to develop your networking
+              skills.
             </p>
           </div>
 
@@ -487,18 +435,16 @@ function Home() {
                 style={{
                   width: `${progressPercentage}%`,
                 }}
-              ></div>
+              />
             </div>
 
             <p>
-              {completedActivities} of {totalActivities}{" "}
-              activities completed
+              {completedActivities} of {totalActivities} activities
+              completed
             </p>
           </div>
         </div>
       </section>
-
-      {/* FOOTER */}
 
       <footer>
         <div>
@@ -515,20 +461,13 @@ function Home() {
   );
 }
 
-/* APP ROUTES */
-
 function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
 
       <Routes>
-        {/* WELCOME */}
-
-        <Route
-          path="/"
-          element={<Welcome />}
-        />
+        <Route path="/" element={<Welcome />} />
 
         <Route
           path="/home"
@@ -539,17 +478,8 @@ function App() {
           }
         />
 
-        {/* AUTHENTICATION */}
-
-        <Route
-          path="/register"
-          element={<Register />}
-        />
-
-        <Route
-          path="/sign-in"
-          element={<SignIn />}
-        />
+        <Route path="/register" element={<Register />} />
+        <Route path="/sign-in" element={<SignIn />} />
 
         <Route
           path="/admin-dashboard"
@@ -569,24 +499,9 @@ function App() {
           }
         />
 
-        {/* MAIN PAGES */}
-
-        <Route
-          path="/materi"
-          element={<Materi />}
-        />
-
-        <Route
-          path="/network-lab"
-          element={<NetworkLab />}
-        />
-
-        <Route
-          path="/ar-hardware"
-          element={<ARHardware />}
-        />
-
-        {/* MATERIALS */}
+        <Route path="/materi" element={<Materi />} />
+        <Route path="/network-lab" element={<NetworkLab />} />
+        <Route path="/ar-hardware" element={<ARHardware />} />
 
         <Route
           path="/materi/dasar-jaringan"
@@ -613,22 +528,14 @@ function App() {
           element={<Troubleshoot />}
         />
 
-        {/* LAB */}
-
-        <Route
-          path="/cable-lab"
-          element={<CableLab />}
-        />
+        <Route path="/cable-lab" element={<CableLab />} />
 
         <Route
           path="/troubleshoot-lab"
           element={<TroubleshootLab />}
         />
 
-        <Route
-          path="/challenge"
-          element={<Challenge />}
-        />
+        <Route path="/challenge" element={<Challenge />} />
 
         <Route
           path="/challenge/cable-detective"
@@ -655,20 +562,9 @@ function App() {
           element={<NetworkCrisis />}
         />
 
-        <Route
-          path="/pre-test"
-          element={<PreTest />}
-        />
-
-        <Route
-          path="/post-test"
-          element={<PostTest />}
-        />
-
-        <Route
-          path="/progress"
-          element={<Progress />}
-        />
+        <Route path="/pre-test" element={<PreTest />} />
+        <Route path="/post-test" element={<PostTest />} />
+        <Route path="/progress" element={<Progress />} />
       </Routes>
     </BrowserRouter>
   );
