@@ -157,7 +157,7 @@ export default function SignIn() {
                 placeholder="Enter your username"
                 autoComplete="username"
                 required
-              />
+                />
             </div>
 
             <div className="form-group">

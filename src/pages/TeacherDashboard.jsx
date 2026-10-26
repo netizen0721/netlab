@@ -1,30 +1,67 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Dashboard.css";
 import { getTrackedLearningStatus } from "../utils/progressTracker";
+import { supabase } from "../lib/supabase";
 
 export default function TeacherDashboard() {
   const [expandedStudent, setExpandedStudent] = useState(null);
+  const [students, setStudents] = useState([]);
+  const [currentTeacher, setCurrentTeacher] = useState(null);
+  const [loadingStudents, setLoadingStudents] = useState(true);
 
-  const users = JSON.parse(
-    localStorage.getItem("netlabUsers") || "[]"
-  );
+  useEffect(() => {
+    const loadDashboardData = async () => {
+      setLoadingStudents(true);
 
-  const students = users.filter(
-    (user) => user.role === "student"
-  );
+      const { data: studentData, error: studentError } =
+        await supabase
+          .from("profiles")
+          .select("id, full_name, username, role, created_at")
+          .eq("role", "student")
+          .order("created_at", { ascending: true });
 
-  const teachers = users.filter(
-    (user) => user.role === "teacher"
-  );
+      if (studentError) {
+        console.error("Failed to load students:", studentError);
+      } else {
+        setStudents(
+          (studentData || []).map((student) => ({
+            ...student,
+            fullName: student.full_name,
+          }))
+        );
+      }
 
-  const currentTeacherUsername =
-    localStorage.getItem("netlabUser");
+      const username = localStorage.getItem("netlabUser");
 
-  const currentTeacher = teachers.find(
-    (teacher) =>
-      teacher.username === currentTeacherUsername
-  );
+      if (username) {
+        const { data: teacherData, error: teacherError } =
+          await supabase
+            .from("profiles")
+            .select("id, full_name, username, role")
+            .eq("username", username)
+            .eq("role", "teacher")
+            .maybeSingle();
+
+        if (teacherError) {
+          console.error("Failed to load teacher:", teacherError);
+        } else {
+          setCurrentTeacher(
+            teacherData
+              ? {
+                  ...teacherData,
+                  fullName: teacherData.full_name,
+                }
+              : null
+          );
+        }
+      }
+
+      setLoadingStudents(false);
+    };
+
+    loadDashboardData();
+  }, []);
 
   const activities = [
     {
