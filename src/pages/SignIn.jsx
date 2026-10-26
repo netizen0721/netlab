@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
@@ -8,7 +7,7 @@ export default function SignIn() {
   const navigate = useNavigate();
 
   const [loginData, setLoginData] = useState({
-    usernameOrEmail: "",
+    username: "",
     password: "",
   });
 
@@ -30,14 +29,11 @@ export default function SignIn() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const usernameOrEmail =
-      loginData.usernameOrEmail.trim();
+    const username = loginData.username.trim();
     const password = loginData.password;
 
-    if (!usernameOrEmail || !password) {
-      setError(
-        "Please enter your username or email and password."
-      );
+    if (!username || !password) {
+      setError("Please enter your username and password.");
       return;
     }
 
@@ -45,14 +41,19 @@ export default function SignIn() {
     setError("");
 
     try {
-      let email = usernameOrEmail;
+      const { data: email, error: lookupError } =
+        await supabase.rpc("get_login_email", {
+          input_username: username,
+        });
 
-      // Resolve username to email using the user's own profile.
-      if (!usernameOrEmail.includes("@")) {
-        setError(
-          "Please sign in using your registered email address."
-        );
-        setLoading(false);
+      if (lookupError) {
+        console.error("Username lookup error:", lookupError);
+        setError("Unable to find your account. Please try again.");
+        return;
+      }
+
+      if (!email) {
+        setError("Username or password is incorrect.");
         return;
       }
 
@@ -63,10 +64,16 @@ export default function SignIn() {
         });
 
       if (signInError) {
-        setError(
-          "Unable to sign in. Please check your email and password."
-        );
-        setLoading(false);
+        console.error("Sign-in error:", signInError);
+
+        if (signInError.message === "Email not confirmed") {
+          setError(
+            "Your account email has not been confirmed. Please confirm it before signing in."
+          );
+        } else {
+          setError("Username or password is incorrect.");
+        }
+
         return;
       }
 
@@ -74,7 +81,6 @@ export default function SignIn() {
 
       if (!user) {
         setError("Unable to retrieve your account.");
-        setLoading(false);
         return;
       }
 
@@ -87,10 +93,7 @@ export default function SignIn() {
 
       if (profileError || !profile) {
         await supabase.auth.signOut();
-        setError(
-          "Your profile could not be found. Please contact the administrator."
-        );
-        setLoading(false);
+        setError("Your profile could not be found. Please contact the administrator.");
         return;
       }
 
@@ -110,9 +113,9 @@ export default function SignIn() {
         navigate("/home");
       }
     } catch (err) {
-      setError(
-        "Something went wrong. Please try again."
-      );
+      console.error("Unexpected sign-in error:", err);
+      setError("Something went wrong. Please try again.");
+    } finally {
       setLoading(false);
     }
   };
@@ -142,22 +145,17 @@ export default function SignIn() {
             </p>
           </div>
 
-          <form
-            className="auth-form"
-            onSubmit={handleSubmit}
-          >
+          <form className="auth-form" onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="usernameOrEmail">
-                Email
-              </label>
+              <label htmlFor="username">Username</label>
               <input
-                id="usernameOrEmail"
-                type="email"
-                name="usernameOrEmail"
-                value={loginData.usernameOrEmail}
+                id="username"
+                type="text"
+                name="username"
+                value={loginData.username}
                 onChange={handleChange}
-                placeholder="Enter your registered email"
-                autoComplete="email"
+                placeholder="Enter your username"
+                autoComplete="username"
                 required
               />
             </div>
@@ -170,7 +168,7 @@ export default function SignIn() {
                   className="forgot-button"
                   onClick={() =>
                     setError(
-                      "Password recovery will be available later."
+                      "Password recovery is not available yet."
                     )
                   }
                 >
@@ -200,57 +198,7 @@ export default function SignIn() {
                     showPassword ? "Hide password" : "Show password"
                   }
                 >
-                  {showPassword ? (
-                    <svg
-                      className="password-eye-icon"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M2.5 12C4.2 8.8 7.5 6.5 12 6.5C16.5 6.5 19.8 8.8 21.5 12C19.8 15.2 16.5 17.5 12 17.5C7.5 17.5 4.2 15.2 2.5 12Z"
-                        stroke="currentColor"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <circle
-                        cx="12"
-                        cy="12"
-                        r="2.8"
-                        stroke="currentColor"
-                        strokeWidth="1.8"
-                      />
-                    </svg>
-                  ) : (
-                    <svg
-                      className="password-eye-icon"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M3 3L21 21"
-                        stroke="currentColor"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                      />
-                      <path
-                        d="M10.6 6.7C11.05 6.57 11.52 6.5 12 6.5C16.5 6.5 19.8 8.8 21.5 12C20.75 13.42 19.7 14.65 18.43 15.58"
-                        stroke="currentColor"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M6.35 8.2C4.7 9.1 3.45 10.55 2.5 12C4.2 15.2 7.5 17.5 12 17.5C13.05 17.5 14.03 17.34 14.92 17.04"
-                        stroke="currentColor"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  )}
+                  {showPassword ? "Hide" : "Show"}
                 </button>
               </div>
             </div>
