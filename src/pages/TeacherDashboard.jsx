@@ -340,7 +340,7 @@ export default function TeacherDashboard() {
             <div className="stat-icon">👨‍🎓</div>
             <div>
               <span>Students Enrolled</span>
-              <strong>{students.length}/20</strong>
+              <strong>{loadingStudents ? "..." : students.length}</strong>
             </div>
           </div>
 
