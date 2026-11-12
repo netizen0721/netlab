@@ -1,4 +1,6 @@
+
 import { useState, useEffect } from "react";
+
 import {
   BrowserRouter,
   Routes,
@@ -7,8 +9,8 @@ import {
 } from "react-router-dom";
 
 import "./App.css";
-
 import { initializeUsers } from "./utils/initializeUsers";
+
 import {
   getTrackedLearningStatus,
   refreshTrackedProgress,
@@ -40,14 +42,17 @@ import NetworkCrisis from "./pages/NetworkCrisis";
 import PreTest from "./pages/PreTest";
 import PostTest from "./pages/PostTest";
 import Progress from "./pages/Progress";
+import QuizTopologi from "./pages/QuizTopologi";
 
 initializeUsers();
 
 function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
+
   const [username] = useState(() =>
     localStorage.getItem("netlabUser")
   );
+
   const [userId] = useState(() =>
     localStorage.getItem("netlabUserId")
   );
@@ -239,6 +244,7 @@ function Home() {
                         <strong>
                           {completedActivities} of {totalActivities}
                         </strong>
+
                         <span>activities completed</span>
                       </div>
                     </div>
@@ -327,51 +333,61 @@ function Home() {
           <div className="feature-card">
             <div className="feature-icon">📚</div>
             <h3>Materials</h3>
+
             <p>
               Learn the fundamentals of networking, network
               devices, topologies, and LAN cables through
               easy-to-understand materials.
             </p>
+
             <Link to="/materi">Learn Materials →</Link>
           </div>
 
           <div className="feature-card">
             <div className="feature-icon">📱</div>
             <h3>3D Lab</h3>
+
             <p>
               Explore various network devices through an
               interactive 3D learning experience.
             </p>
+
             <Link to="/ar-hardware">Explore 3D Lab →</Link>
           </div>
 
           <div className="feature-card">
             <div className="feature-icon">🌐</div>
             <h3>Network Lab</h3>
+
             <p>
               Simulate different network topologies and
               connect devices interactively.
             </p>
+
             <Link to="/network-lab">Start Simulation →</Link>
           </div>
 
           <div className="feature-card">
             <div className="feature-icon">🔌</div>
             <h3>Cable Lab</h3>
+
             <p>
               Learn how to arrange LAN cables by matching
               cable colors to the correct RJ45 positions.
             </p>
+
             <Link to="/cable-lab">Build Cable →</Link>
           </div>
 
           <div className="feature-card">
             <div className="feature-icon">🔧</div>
             <h3>Troubleshoot Lab</h3>
+
             <p>
               Find and fix network problems through
               hands-on troubleshooting simulations.
             </p>
+
             <Link to="/troubleshoot-lab">
               Start Troubleshooting →
             </Link>
@@ -380,30 +396,36 @@ function Home() {
           <div className="feature-card">
             <div className="feature-icon">🧠</div>
             <h3>Challenge</h3>
+
             <p>
               Test your understanding through quizzes and
               various learning challenges.
             </p>
+
             <Link to="/challenge">Start Challenge →</Link>
           </div>
 
           <div className="feature-card">
             <div className="feature-icon">📝</div>
             <h3>Pre-Test</h3>
+
             <p>
               Test your initial knowledge before learning
               networking materials.
             </p>
+
             <Link to="/pre-test">Start Pre-Test →</Link>
           </div>
 
           <div className="feature-card">
             <div className="feature-icon">🎯</div>
             <h3>Post-Test</h3>
+
             <p>
               Test your understanding after completing the
               networking lessons.
             </p>
+
             <Link to="/post-test">Start Post-Test →</Link>
           </div>
         </div>
@@ -565,6 +587,16 @@ function App() {
         <Route path="/pre-test" element={<PreTest />} />
         <Route path="/post-test" element={<PostTest />} />
         <Route path="/progress" element={<Progress />} />
+
+        {/* Route baru untuk Kuis Topologi Jaringan */}
+        <Route
+          path="/topology-quiz"
+          element={
+            <ProtectedRoute allowedRoles={["student"]}>
+              <QuizTopologi />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

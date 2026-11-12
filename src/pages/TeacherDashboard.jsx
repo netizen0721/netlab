@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Dashboard.css";
@@ -9,6 +10,11 @@ export default function TeacherDashboard() {
   const [students, setStudents] = useState([]);
   const [currentTeacher, setCurrentTeacher] = useState(null);
   const [loadingStudents, setLoadingStudents] = useState(true);
+
+  // Quiz Results
+  const [quizResults, setQuizResults] = useState([]);
+  const [loadingQuizResults, setLoadingQuizResults] = useState(true);
+  const [quizResultsError, setQuizResultsError] = useState("");
 
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -58,6 +64,26 @@ export default function TeacherDashboard() {
       }
 
       setLoadingStudents(false);
+
+      // Load Quiz Results
+      setLoadingQuizResults(true);
+      setQuizResultsError("");
+
+      const { data: quizData, error: quizError } = await supabase
+        .from("quiz_results")
+        .select(
+          "id, student_id, student_name, username, quiz_title, score, correct_answers, total_questions, submitted_at"
+        )
+        .order("submitted_at", { ascending: false });
+
+      if (quizError) {
+        console.error("Failed to load quiz results:", quizError);
+        setQuizResultsError(quizError.message);
+      } else {
+        setQuizResults(quizData || []);
+      }
+
+      setLoadingQuizResults(false);
     };
 
     loadDashboardData();
@@ -184,37 +210,31 @@ export default function TeacherDashboard() {
     }
   };
 
-  const studentProgressList = students.map(
-    (student) => {
-      const learningStatus =
-        getStudentLearningStatus(student);
+  const studentProgressList = students.map((student) => {
+    const learningStatus = getStudentLearningStatus(student);
 
-      return {
-        student,
-        learningStatus,
-        progress: learningStatus?.progress || 0,
-      };
-    }
-  );
+    return {
+      student,
+      learningStatus,
+      progress: learningStatus?.progress || 0,
+    };
+  });
 
   const getActivityResult = (activityId) => {
-    const completedStudents =
-      studentProgressList.filter(
-        ({ learningStatus }) =>
-          learningStatus.activities?.some(
-            (activity) =>
-              activity.activityId === activityId &&
-              activity.status === "completed"
-          )
-      ).length;
+    const completedStudents = studentProgressList.filter(
+      ({ learningStatus }) =>
+        learningStatus.activities?.some(
+          (activity) =>
+            activity.activityId === activityId &&
+            activity.status === "completed"
+        )
+    ).length;
 
     const totalStudents = students.length;
 
     const percentage =
       totalStudents > 0
-        ? Math.round(
-            (completedStudents / totalStudents) * 100
-          )
+        ? Math.round((completedStudents / totalStudents) * 100)
         : 0;
 
     return {
@@ -224,22 +244,19 @@ export default function TeacherDashboard() {
     };
   };
 
-  const activeStudents =
-    studentProgressList.filter(
-      ({ progress }) => progress > 0
-    ).length;
+  const activeStudents = studentProgressList.filter(
+    ({ progress }) => progress > 0
+  ).length;
 
-  const completedActivities =
-    studentProgressList.filter(
-      ({ progress }) => progress >= 80
-    ).length;
+  const completedActivities = studentProgressList.filter(
+    ({ progress }) => progress >= 80
+  ).length;
 
   const averageProgress =
     studentProgressList.length > 0
       ? Math.round(
           studentProgressList.reduce(
-            (total, { progress }) =>
-              total + progress,
+            (total, { progress }) => total + progress,
             0
           ) / studentProgressList.length
         )
@@ -253,32 +270,35 @@ export default function TeacherDashboard() {
   };
 
   const scrollToSection = (id) => {
-    document
-      .getElementById(id)
-      ?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
+    document.getElementById(id)?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   };
 
   const toggleStudent = (studentId) => {
     setExpandedStudent(
-      expandedStudent === studentId
-        ? null
-        : studentId
+      expandedStudent === studentId ? null : studentId
     );
+  };
+
+  const formatSubmittedDate = (date) => {
+    if (!date) return "-";
+
+    return new Date(date).toLocaleString("id-ID", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
   return (
     <div className="dashboard-page">
       <header className="dashboard-navbar">
-        <Link
-          to="/teacher-dashboard"
-          className="dashboard-brand"
-        >
-          <div className="dashboard-brand-icon">
-            NET
-          </div>
+        <Link to="/teacher-dashboard" className="dashboard-brand">
+          <div className="dashboard-brand-icon">NET</div>
 
           <div>
             <strong>NETLAB</strong>
@@ -289,8 +309,7 @@ export default function TeacherDashboard() {
         <div className="dashboard-user">
           <div className="dashboard-user-info">
             <strong>
-              {currentTeacher?.fullName ||
-                "NETLAB Teacher"}
+              {currentTeacher?.fullName || "NETLAB Teacher"}
             </strong>
             <span>Teacher</span>
           </div>
@@ -307,15 +326,11 @@ export default function TeacherDashboard() {
       <main className="dashboard-content">
         <section className="dashboard-heading">
           <div>
-            <p className="dashboard-label">
-              TEACHER PANEL
-            </p>
-
+            <p className="dashboard-label">TEACHER PANEL</p>
             <h1>Welcome, Teacher</h1>
-
             <p>
-              Monitor student learning progress,
-              activities, and practical lab performance.
+              Monitor student learning progress, activities, and
+              practical lab performance.
             </p>
           </div>
         </section>
@@ -323,45 +338,33 @@ export default function TeacherDashboard() {
         <section className="dashboard-stats">
           <div className="dashboard-stat-card">
             <div className="stat-icon">👨‍🎓</div>
-
             <div>
               <span>Students Enrolled</span>
-              <strong>
-                {students.length}/20
-              </strong>
+              <strong>{students.length}/20</strong>
             </div>
           </div>
 
           <div className="dashboard-stat-card">
             <div className="stat-icon">🟢</div>
-
             <div>
               <span>Active Learners</span>
-              <strong>
-                {activeStudents}
-              </strong>
+              <strong>{activeStudents}</strong>
             </div>
           </div>
 
           <div className="dashboard-stat-card">
             <div className="stat-icon">📈</div>
-
             <div>
               <span>Average Progress</span>
-              <strong>
-                {averageProgress}%
-              </strong>
+              <strong>{averageProgress}%</strong>
             </div>
           </div>
 
           <div className="dashboard-stat-card">
             <div className="stat-icon">✓</div>
-
             <div>
               <span>Completed Activities</span>
-              <strong>
-                {completedActivities}
-              </strong>
+              <strong>{completedActivities}</strong>
             </div>
           </div>
         </section>
@@ -373,48 +376,35 @@ export default function TeacherDashboard() {
           >
             <div className="panel-header">
               <div>
-                <p className="panel-label">
-                  STUDENT MONITORING
-                </p>
-
+                <p className="panel-label">STUDENT MONITORING</p>
                 <h2>Student Progress</h2>
               </div>
             </div>
 
-            {students.length === 0 ? (
+            {loadingStudents ? (
               <div className="empty-dashboard">
-                <div className="empty-dashboard-icon">
-                  👨‍🎓
-                </div>
-
-                <strong>
-                  No students registered yet
-                </strong>
-
+                <strong>Loading students...</strong>
+              </div>
+            ) : students.length === 0 ? (
+              <div className="empty-dashboard">
+                <div className="empty-dashboard-icon">👨‍🎓</div>
+                <strong>No students registered yet</strong>
                 <span>
-                  Student accounts will appear here
-                  once they register.
+                  Student accounts will appear here once they register.
                 </span>
               </div>
             ) : (
               <div className="student-progress-list">
                 {studentProgressList.map(
-                  ({
-                    student,
-                    learningStatus,
-                    progress,
-                  }) => {
+                  ({ student, learningStatus, progress }) => {
                     const isExpanded =
-                      expandedStudent ===
-                      student.id;
+                      expandedStudent === student.id;
 
                     const completedCount =
-                      learningStatus?.completedCount ||
-                      0;
+                      learningStatus?.completedCount || 0;
 
                     const totalActivities =
-                      learningStatus?.totalActivities ||
-                      9;
+                      learningStatus?.totalActivities || 9;
 
                     const studentActivities =
                       learningStatus?.activities || [];
@@ -423,28 +413,19 @@ export default function TeacherDashboard() {
                       <div
                         className="student-progress-row"
                         key={student.id}
-                        onClick={() =>
-                          toggleStudent(student.id)
-                        }
-                        style={{
-                          cursor: "pointer",
-                        }}
+                        onClick={() => toggleStudent(student.id)}
+                        style={{ cursor: "pointer" }}
                       >
                         <div className="student-avatar">
-                          {student.fullName
-                            ?.charAt(0)
-                            .toUpperCase() || "S"}
+                          {student.fullName?.charAt(0).toUpperCase() ||
+                            "S"}
                         </div>
 
                         <div className="student-progress-info">
                           <div className="student-progress-top">
-                            <strong>
-                              {student.fullName}
-                            </strong>
-
+                            <strong>{student.fullName}</strong>
                             <span>
-                              {completedCount}/
-                              {totalActivities} ·{" "}
+                              {completedCount}/{totalActivities} ·{" "}
                               {progress}%
                             </span>
                           </div>
@@ -452,34 +433,25 @@ export default function TeacherDashboard() {
                           <div className="progress-bar">
                             <div
                               className="progress-bar-fill"
-                              style={{
-                                width: `${progress}%`,
-                              }}
+                              style={{ width: `${progress}%` }}
                             ></div>
                           </div>
 
                           <div
                             style={{
                               display: "flex",
-                              alignItems:
-                                "center",
-                              justifyContent:
-                                "space-between",
+                              alignItems: "center",
+                              justifyContent: "space-between",
                               gap: "10px",
                             }}
                           >
-                            <small>
-                              @{student.username}
-                            </small>
+                            <small>@{student.username}</small>
 
                             <span
                               style={{
-                                fontSize:
-                                  "11px",
-                                color:
-                                  "#a855f7",
-                                fontWeight:
-                                  "700",
+                                fontSize: "11px",
+                                color: "#a855f7",
+                                fontWeight: "700",
                               }}
                             >
                               {isExpanded
@@ -497,94 +469,68 @@ export default function TeacherDashboard() {
                                 marginTop: "14px",
                                 display: "grid",
                                 gap: "7px",
-                                paddingTop:
-                                  "12px",
+                                paddingTop: "12px",
                                 borderTop:
                                   "1px solid rgba(255,255,255,0.08)",
                               }}
                             >
                               <div
                                 style={{
-                                  fontSize:
-                                    "12px",
-                                  fontWeight:
-                                    "800",
-                                  color:
-                                    "#ffffff",
-                                  marginBottom:
-                                    "3px",
+                                  fontSize: "12px",
+                                  fontWeight: "800",
+                                  color: "#ffffff",
+                                  marginBottom: "3px",
                                 }}
                               >
                                 PROGRESS DETAILS
                               </div>
 
-                              {studentActivities.map(
-                                (activity) => (
-                                  <div
-                                    key={
-                                      activity.activityId
-                                    }
+                              {studentActivities.map((activity) => (
+                                <div
+                                  key={activity.activityId}
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                    gap: "12px",
+                                    padding: "8px 10px",
+                                    borderRadius: "8px",
+                                    background:
+                                      "rgba(255,255,255,0.03)",
+                                    border:
+                                      "1px solid rgba(255,255,255,0.06)",
+                                  }}
+                                >
+                                  <span
                                     style={{
-                                      display:
-                                        "flex",
-                                      alignItems:
-                                        "center",
-                                      justifyContent:
-                                        "space-between",
-                                      gap: "12px",
-                                      padding:
-                                        "8px 10px",
-                                      borderRadius:
-                                        "8px",
-                                      background:
-                                        "rgba(255,255,255,0.03)",
-                                      border:
-                                        "1px solid rgba(255,255,255,0.06)",
+                                      fontSize: "12px",
+                                      color: "#e5e7eb",
                                     }}
                                   >
-                                    <span
-                                      style={{
-                                        fontSize:
-                                          "12px",
-                                        color:
-                                          "#e5e7eb",
-                                      }}
-                                    >
-                                      {activity.order}.{" "}
-                                      {
-                                        activity.title
-                                      }
-                                    </span>
+                                    {activity.order}. {activity.title}
+                                  </span>
 
-                                    <span
-                                      style={{
-                                        fontSize:
-                                          "11px",
-                                        fontWeight:
-                                          "700",
-                                        color:
-                                          activity.status ===
-                                          "completed"
-                                            ? "#4ade80"
-                                            : activity.status ===
-                                              "current"
-                                            ? "#facc15"
-                                            : "#94a3b8",
-                                        whiteSpace:
-                                          "nowrap",
-                                      }}
-                                    >
-                                      {activity.status ===
-                                      "completed"
-                                        ? "✓ Completed"
-                                        : activity.status ===
-                                          "current"
-                                        ? "● In Progress"
-                                        : "○ Not Completed"}
-                                    </span>
-                                  </div>
-                                )
-                              )}
+                                  <span
+                                    style={{
+                                      fontSize: "11px",
+                                      fontWeight: "700",
+                                      color:
+                                        activity.status === "completed"
+                                          ? "#4ade80"
+                                          : activity.status === "current"
+                                          ? "#facc15"
+                                          : "#94a3b8",
+                                      whiteSpace: "nowrap",
+                                    }}
+                                  >
+                                    {activity.status === "completed"
+                                      ? "✓ Completed"
+                                      : activity.status === "current"
+                                      ? "● In Progress"
+                                      : "○ Not Completed"}
+                                  </span>
+                                </div>
+                              ))}
                             </div>
                           )}
                         </div>
@@ -599,10 +545,7 @@ export default function TeacherDashboard() {
           <div className="dashboard-panel">
             <div className="panel-header">
               <div>
-                <p className="panel-label">
-                  QUICK ACCESS
-                </p>
-
+                <p className="panel-label">QUICK ACCESS</p>
                 <h2>Teacher Tools</h2>
               </div>
             </div>
@@ -611,84 +554,65 @@ export default function TeacherDashboard() {
               <button
                 className="quick-action"
                 onClick={() =>
-                  scrollToSection(
-                    "student-progress-section"
-                  )
+                  scrollToSection("student-progress-section")
                 }
               >
                 <span>👨‍🎓</span>
-
                 <div>
-                  <strong>
-                    Student Progress
-                  </strong>
-
-                  <small>
-                    Monitor student learning progress
-                  </small>
+                  <strong>Student Progress</strong>
+                  <small>Monitor student learning progress</small>
                 </div>
               </button>
 
               <button
                 className="quick-action"
                 onClick={() =>
-                  scrollToSection(
-                    "learning-materials-section"
-                  )
+                  scrollToSection("learning-materials-section")
                 }
               >
                 <span>📚</span>
-
                 <div>
-                  <strong>
-                    Learning Materials
-                  </strong>
-
-                  <small>
-                    View NETLAB learning materials
-                  </small>
+                  <strong>Learning Materials</strong>
+                  <small>View NETLAB learning materials</small>
                 </div>
               </button>
 
               <button
                 className="quick-action"
                 onClick={() =>
-                  scrollToSection(
-                    "practical-labs-section"
-                  )
+                  scrollToSection("practical-labs-section")
                 }
               >
                 <span>🧪</span>
-
                 <div>
-                  <strong>
-                    Practical Labs
-                  </strong>
-
-                  <small>
-                    Review available practical labs
-                  </small>
+                  <strong>Practical Labs</strong>
+                  <small>Review available practical labs</small>
                 </div>
               </button>
 
               <button
                 className="quick-action"
                 onClick={() =>
-                  scrollToSection(
-                    "activity-results-section"
-                  )
+                  scrollToSection("activity-results-section")
                 }
               >
                 <span>📊</span>
-
                 <div>
-                  <strong>
-                    Activity Results
-                  </strong>
+                  <strong>Activity Results</strong>
+                  <small>Review student activity results</small>
+                </div>
+              </button>
 
-                  <small>
-                    Review student activity results
-                  </small>
+              <button
+                className="quick-action"
+                onClick={() =>
+                  scrollToSection("quiz-results-section")
+                }
+              >
+                <span>📝</span>
+                <div>
+                  <strong>Quiz Results</strong>
+                  <small>View student topology quiz scores</small>
                 </div>
               </button>
             </div>
@@ -701,10 +625,7 @@ export default function TeacherDashboard() {
         >
           <div className="panel-header">
             <div>
-              <p className="panel-label">
-                LEARNING MATERIALS
-              </p>
-
+              <p className="panel-label">LEARNING MATERIALS</p>
               <h2>NETLAB Learning Materials</h2>
             </div>
           </div>
@@ -716,17 +637,11 @@ export default function TeacherDashboard() {
                 key={material.title}
               >
                 <div className="activity-card-top">
-                  <span className="activity-type">
-                    Material
-                  </span>
-
-                  <span className="activity-status">
-                    Available
-                  </span>
+                  <span className="activity-type">Material</span>
+                  <span className="activity-status">Available</span>
                 </div>
 
                 <h3>{material.title}</h3>
-
                 <p>{material.description}</p>
 
                 <Link
@@ -750,32 +665,20 @@ export default function TeacherDashboard() {
         >
           <div className="panel-header">
             <div>
-              <p className="panel-label">
-                PRACTICAL LABS
-              </p>
-
+              <p className="panel-label">PRACTICAL LABS</p>
               <h2>NETLAB Practical Labs</h2>
             </div>
           </div>
 
           <div className="activity-grid">
             {practicalLabs.map((lab) => (
-              <div
-                className="activity-card"
-                key={lab.title}
-              >
+              <div className="activity-card" key={lab.title}>
                 <div className="activity-card-top">
-                  <span className="activity-type">
-                    Practical Lab
-                  </span>
-
-                  <span className="activity-status">
-                    Available
-                  </span>
+                  <span className="activity-type">Practical Lab</span>
+                  <span className="activity-status">Available</span>
                 </div>
 
                 <h3>{lab.title}</h3>
-
                 <p>{lab.description}</p>
 
                 <Link
@@ -799,65 +702,41 @@ export default function TeacherDashboard() {
         >
           <div className="panel-header">
             <div>
-              <p className="panel-label">
-                ACTIVITY RESULTS
-              </p>
-
+              <p className="panel-label">ACTIVITY RESULTS</p>
               <h2>Student Activity Results</h2>
             </div>
           </div>
 
           {students.length === 0 ? (
             <div className="empty-dashboard">
-              <div className="empty-dashboard-icon">
-                📊
-              </div>
-
-              <strong>
-                No student results available
-              </strong>
-
+              <div className="empty-dashboard-icon">📊</div>
+              <strong>No student results available</strong>
               <span>
-                Student activity results will appear
-                here once students start learning.
+                Student activity results will appear here once students
+                start learning.
               </span>
             </div>
           ) : (
             <div className="activity-grid">
               {studentProgressList.map(
-                ({
-                  student,
-                  learningStatus,
-                }) => (
+                ({ student, learningStatus }) => (
                   <div
                     className="activity-card"
                     key={student.id}
                   >
                     <div className="activity-card-top">
-                      <span className="activity-type">
-                        Student
-                      </span>
-
+                      <span className="activity-type">Student</span>
                       <span className="activity-status">
-                        {
-                          learningStatus.completedCount
-                        }
-                        /
-                        {
-                          learningStatus.totalActivities
-                        }
+                        {learningStatus.completedCount}/
+                        {learningStatus.totalActivities}
                       </span>
                     </div>
 
-                    <h3>
-                      {student.fullName}
-                    </h3>
+                    <h3>{student.fullName}</h3>
 
                     <p>
                       Overall progress:{" "}
-                      <strong>
-                        {learningStatus.progress}%
-                      </strong>
+                      <strong>{learningStatus.progress}%</strong>
                     </p>
 
                     <div
@@ -867,42 +746,33 @@ export default function TeacherDashboard() {
                         gap: "7px",
                       }}
                     >
-                      {learningStatus.activities.map(
-                        (activity) => (
-                          <div
-                            key={
-                              activity.activityId
-                            }
+                      {learningStatus.activities.map((activity) => (
+                        <div
+                          key={activity.activityId}
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            gap: "10px",
+                            fontSize: "12px",
+                          }}
+                        >
+                          <span>{activity.title}</span>
+
+                          <span
                             style={{
-                              display: "flex",
-                              justifyContent:
-                                "space-between",
-                              gap: "10px",
-                              fontSize: "12px",
+                              color:
+                                activity.status === "completed"
+                                  ? "#4ade80"
+                                  : "#94a3b8",
+                              fontWeight: "700",
                             }}
                           >
-                            <span>
-                              {activity.title}
-                            </span>
-
-                            <span
-                              style={{
-                                color:
-                                  activity.status ===
-                                  "completed"
-                                    ? "#4ade80"
-                                    : "#94a3b8",
-                                fontWeight: "700",
-                              }}
-                            >
-                              {activity.status ===
-                              "completed"
-                                ? "Completed"
-                                : "Not Completed"}
-                            </span>
-                          </div>
-                        )
-                      )}
+                            {activity.status === "completed"
+                              ? "Completed"
+                              : "Not Completed"}
+                          </span>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 )
@@ -911,37 +781,215 @@ export default function TeacherDashboard() {
           )}
         </section>
 
+        {/* QUIZ RESULTS */}
+        <section
+          id="quiz-results-section"
+          className="dashboard-panel activity-panel"
+        >
+          <div className="panel-header">
+            <div>
+              <p className="panel-label">QUIZ ASSESSMENT</p>
+              <h2>Student Quiz Results</h2>
+              <p>
+                Review student scores from the Topology Network Quiz.
+              </p>
+            </div>
+          </div>
+
+          {loadingQuizResults ? (
+            <div className="empty-dashboard">
+              <div className="empty-dashboard-icon">📝</div>
+              <strong>Loading quiz results...</strong>
+              <span>Please wait while the results are retrieved.</span>
+            </div>
+          ) : quizResultsError ? (
+            <div className="empty-dashboard">
+              <div className="empty-dashboard-icon">⚠️</div>
+              <strong>Failed to load quiz results</strong>
+              <span>{quizResultsError}</span>
+            </div>
+          ) : quizResults.length === 0 ? (
+            <div className="empty-dashboard">
+              <div className="empty-dashboard-icon">📝</div>
+              <strong>No quiz results available yet</strong>
+              <span>
+                Student quiz submissions will appear here after they
+                complete the Topology Network Quiz.
+              </span>
+            </div>
+          ) : (
+            <>
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: "12px",
+                  marginBottom: "18px",
+                }}
+              >
+                <div className="activity-card">
+                  <span className="activity-type">
+                    Total Submissions
+                  </span>
+                  <h3>{quizResults.length}</h3>
+                </div>
+
+                <div className="activity-card">
+                  <span className="activity-type">
+                    Average Score
+                  </span>
+                  <h3>
+                    {Math.round(
+                      quizResults.reduce(
+                        (total, result) =>
+                          total + Number(result.score || 0),
+                        0
+                      ) / quizResults.length
+                    )}
+                  </h3>
+                </div>
+              </div>
+
+              <div
+                style={{
+                  width: "100%",
+                  overflowX: "auto",
+                }}
+              >
+                <table
+                  style={{
+                    width: "100%",
+                    minWidth: "650px",
+                    borderCollapse: "collapse",
+                    color: "#e5e7eb",
+                    fontSize: "13px",
+                  }}
+                >
+                  <thead>
+                    <tr
+                      style={{
+                        borderBottom:
+                          "1px solid rgba(255,255,255,0.12)",
+                        textAlign: "left",
+                      }}
+                    >
+                      {[
+                        "No.",
+                        "Student Name",
+                        "Username",
+                        "Correct Answers",
+                        "Score",
+                        "Submitted At",
+                      ].map((heading) => (
+                        <th
+                          key={heading}
+                          style={{
+                            padding: "14px 12px",
+                            color: "#c4b5fd",
+                            fontWeight: "700",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {heading}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {quizResults.map((result, index) => (
+                      <tr
+                        key={result.id}
+                        style={{
+                          borderBottom:
+                            "1px solid rgba(255,255,255,0.07)",
+                        }}
+                      >
+                        <td style={{ padding: "14px 12px" }}>
+                          {index + 1}
+                        </td>
+
+                        <td
+                          style={{
+                            padding: "14px 12px",
+                            fontWeight: "600",
+                          }}
+                        >
+                          {result.student_name}
+                        </td>
+
+                        <td style={{ padding: "14px 12px" }}>
+                          @{result.username}
+                        </td>
+
+                        <td style={{ padding: "14px 12px" }}>
+                          {result.correct_answers}/
+                          {result.total_questions}
+                        </td>
+
+                        <td style={{ padding: "14px 12px" }}>
+                          <span
+                            style={{
+                              display: "inline-block",
+                              padding: "5px 11px",
+                              borderRadius: "20px",
+                              background:
+                                Number(result.score) >= 80
+                                  ? "rgba(34,197,94,0.15)"
+                                  : Number(result.score) >= 60
+                                  ? "rgba(234,179,8,0.15)"
+                                  : "rgba(239,68,68,0.15)",
+                              color:
+                                Number(result.score) >= 80
+                                  ? "#4ade80"
+                                  : Number(result.score) >= 60
+                                  ? "#facc15"
+                                  : "#f87171",
+                              fontWeight: "800",
+                            }}
+                          >
+                            {result.score}
+                          </span>
+                        </td>
+
+                        <td
+                          style={{
+                            padding: "14px 12px",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {formatSubmittedDate(result.submitted_at)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
+        </section>
+
         <section className="dashboard-panel activity-panel">
           <div className="panel-header">
             <div>
-              <p className="panel-label">
-                NETLAB ACTIVITIES
-              </p>
-
+              <p className="panel-label">NETLAB ACTIVITIES</p>
               <h2>Learning Activities</h2>
             </div>
           </div>
 
           {students.length === 0 ? (
             <div className="empty-dashboard">
-              <div className="empty-dashboard-icon">
-                📚
-              </div>
-
-              <strong>
-                No student data available
-              </strong>
-
+              <div className="empty-dashboard-icon">📚</div>
+              <strong>No student data available</strong>
               <span>
-                Activity progress will appear here
-                once students start learning.
+                Activity progress will appear here once students start
+                learning.
               </span>
             </div>
           ) : (
             <div className="activity-grid">
               {activities.map((activity) => {
-                const result =
-                  getActivityResult(activity.id);
+                const result = getActivityResult(activity.id);
 
                 return (
                   <div
@@ -952,45 +1000,32 @@ export default function TeacherDashboard() {
                       <span className="activity-type">
                         {activity.type}
                       </span>
-
                       <span className="activity-status">
                         {result.completedStudents}/
                         {result.totalStudents}
                       </span>
                     </div>
 
-                    <h3>
-                      {activity.title}
-                    </h3>
+                    <h3>{activity.title}</h3>
 
                     <p>
                       {result.completedStudents} of{" "}
-                      {result.totalStudents} students
-                      have completed this activity.
+                      {result.totalStudents} students have completed
+                      this activity.
                     </p>
 
-                    <div
-                      style={{
-                        marginTop: "14px",
-                      }}
-                    >
+                    <div style={{ marginTop: "14px" }}>
                       <div
                         style={{
                           display: "flex",
-                          justifyContent:
-                            "space-between",
+                          justifyContent: "space-between",
                           alignItems: "center",
                           marginBottom: "7px",
                           fontSize: "12px",
                         }}
                       >
-                        <span>
-                          Completion Rate
-                        </span>
-
-                        <strong>
-                          {result.percentage}%
-                        </strong>
+                        <span>Completion Rate</span>
+                        <strong>{result.percentage}%</strong>
                       </div>
 
                       <div className="progress-bar">

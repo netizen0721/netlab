@@ -1,7 +1,6 @@
+
 import { useRef, useState } from "react";
-
 import { Link } from "react-router-dom";
-
 import "./NetworkLab.css";
 
 function NetworkLab() {
@@ -11,6 +10,10 @@ function NetworkLab() {
   const [selectedDeviceId, setSelectedDeviceId] = useState(null);
   const [topology, setTopology] = useState("star");
   const [checkResult, setCheckResult] = useState("");
+
+  // State baru untuk menampilkan tombol kuis
+  const [labCompleted, setLabCompleted] = useState(false);
+
   const deviceId = useRef(0);
 
   const completeNetworkLab = () => {
@@ -73,6 +76,9 @@ function NetworkLab() {
       "netlabLastActivity",
       "Network Lab"
     );
+
+    // Tampilkan tombol kuis setelah simulasi berhasil
+    setLabCompleted(true);
   };
 
   const handleDragStart = (event, type, icon) => {
@@ -94,6 +100,7 @@ function NetworkLab() {
     const device = JSON.parse(data);
     const board = event.currentTarget;
     const rect = board.getBoundingClientRect();
+
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
@@ -263,7 +270,6 @@ function NetworkLab() {
       setCheckResult(
         "❌ Star topology requires a Switch as the center."
       );
-
       return;
     }
 
@@ -271,7 +277,6 @@ function NetworkLab() {
       setCheckResult(
         "❌ Use one Switch as the center of the Star topology."
       );
-
       return;
     }
 
@@ -285,7 +290,6 @@ function NetworkLab() {
       setCheckResult(
         "❌ Add other devices to connect to the Switch."
       );
-
       return;
     }
 
@@ -305,7 +309,6 @@ function NetworkLab() {
       setCheckResult(
         "❌ Not quite right. In a Star topology, all devices must be connected directly to the Switch."
       );
-
       return;
     }
 
@@ -324,18 +327,13 @@ function NetworkLab() {
       setCheckResult(
         "❌ Some devices are still not connected to the Switch."
       );
-
       return;
     }
 
-    if (
-      connections.length !==
-      otherDevices.length
-    ) {
+    if (connections.length !== otherDevices.length) {
       setCheckResult(
         "❌ Each device in a Star topology must have one direct connection to the Switch."
       );
-
       return;
     }
 
@@ -351,18 +349,13 @@ function NetworkLab() {
       setCheckResult(
         "❌ Bus topology requires at least 2 devices."
       );
-
       return;
     }
 
-    if (
-      connections.length !==
-      devices.length - 1
-    ) {
+    if (connections.length !== devices.length - 1) {
       setCheckResult(
         "❌ The number of connections is incorrect. A Bus topology must form a single path."
       );
-
       return;
     }
 
@@ -370,7 +363,6 @@ function NetworkLab() {
       setCheckResult(
         "❌ Some devices are still not connected to the Bus path."
       );
-
       return;
     }
 
@@ -382,7 +374,6 @@ function NetworkLab() {
       setCheckResult(
         "❌ A device has more than two connections. A Bus topology must form a single path."
       );
-
       return;
     }
 
@@ -398,7 +389,6 @@ function NetworkLab() {
       setCheckResult(
         "❌ Ring topology requires at least 3 devices."
       );
-
       return;
     }
 
@@ -406,7 +396,6 @@ function NetworkLab() {
       setCheckResult(
         "❌ The number of connections does not form a ring."
       );
-
       return;
     }
 
@@ -418,7 +407,6 @@ function NetworkLab() {
       setCheckResult(
         "❌ Each device in a Ring topology must have exactly two connections."
       );
-
       return;
     }
 
@@ -426,7 +414,6 @@ function NetworkLab() {
       setCheckResult(
         "❌ The network does not form one complete ring."
       );
-
       return;
     }
 
@@ -442,35 +429,28 @@ function NetworkLab() {
       setCheckResult(
         "❌ Mesh topology requires at least 2 devices."
       );
-
       return;
     }
 
     const expectedConnections =
       (devices.length * (devices.length - 1)) / 2;
 
-    if (
-      connections.length !==
-      expectedConnections
-    ) {
+    if (connections.length !== expectedConnections) {
       setCheckResult(
         `❌ Incomplete. Mesh requires ${expectedConnections} connections for ${devices.length} devices.`
       );
-
       return;
     }
 
     const allFullyConnected = devices.every(
       (device) =>
-        getDegree(device.id) ===
-        devices.length - 1
+        getDegree(device.id) === devices.length - 1
     );
 
     if (!allFullyConnected) {
       setCheckResult(
         "❌ Each device in a Mesh topology must be directly connected to every other device."
       );
-
       return;
     }
 
@@ -486,18 +466,13 @@ function NetworkLab() {
       setCheckResult(
         "❌ Tree topology requires at least 2 devices."
       );
-
       return;
     }
 
-    if (
-      connections.length !==
-      devices.length - 1
-    ) {
+    if (connections.length !== devices.length - 1) {
       setCheckResult(
         "❌ A Tree topology must have a number of connections equal to the number of devices minus one."
       );
-
       return;
     }
 
@@ -505,7 +480,6 @@ function NetworkLab() {
       setCheckResult(
         "❌ Some devices are still not connected within the Tree structure."
       );
-
       return;
     }
 
@@ -513,7 +487,6 @@ function NetworkLab() {
       setCheckResult(
         "❌ A Tree topology must not contain connections that form a cycle."
       );
-
       return;
     }
 
@@ -529,7 +502,6 @@ function NetworkLab() {
       setCheckResult(
         "❌ Add at least 2 devices first."
       );
-
       return;
     }
 
@@ -537,7 +509,6 @@ function NetworkLab() {
       setCheckResult(
         "❌ No cables have been connected yet. Connect the devices first."
       );
-
       return;
     }
 
@@ -567,10 +538,7 @@ function NetworkLab() {
     }
   };
 
-  const handleDevicePointerDown = (
-    event,
-    index
-  ) => {
+  const handleDevicePointerDown = (event, index) => {
     event.preventDefault();
     event.stopPropagation();
 
@@ -586,17 +554,15 @@ function NetworkLab() {
       return;
     }
 
-    const board =
-      event.currentTarget.closest(
-        ".network-board"
-      );
+    const board = event.currentTarget.closest(
+      ".network-board"
+    );
 
     if (!board) {
       return;
     }
 
-    const rect =
-      board.getBoundingClientRect();
+    const rect = board.getBoundingClientRect();
 
     let x = event.clientX - rect.left;
     let y = event.clientY - rect.top;
@@ -612,15 +578,14 @@ function NetworkLab() {
     );
 
     setDevices((currentDevices) =>
-      currentDevices.map(
-        (device, index) =>
-          index === draggingIndex
-            ? {
-                ...device,
-                x,
-                y,
-              }
-            : device
+      currentDevices.map((device, index) =>
+        index === draggingIndex
+          ? {
+              ...device,
+              x,
+              y,
+            }
+          : device
       )
     );
   };
@@ -652,10 +617,7 @@ function NetworkLab() {
     setCheckResult("");
   };
 
-  const handleDeviceContextMenu = (
-    event,
-    id
-  ) => {
+  const handleDeviceContextMenu = (event, id) => {
     event.preventDefault();
     handleDeleteDevice(id);
   };
@@ -702,10 +664,7 @@ function NetworkLab() {
             id="topology"
             value={topology}
             onChange={(event) => {
-              setTopology(
-                event.target.value
-              );
-
+              setTopology(event.target.value);
               setCheckResult("");
             }}
           >
@@ -735,11 +694,7 @@ function NetworkLab() {
           <button
             draggable="true"
             onDragStart={(event) =>
-              handleDragStart(
-                event,
-                "PC",
-                "💻"
-              )
+              handleDragStart(event, "PC", "💻")
             }
           >
             💻 PC
@@ -748,11 +703,7 @@ function NetworkLab() {
           <button
             draggable="true"
             onDragStart={(event) =>
-              handleDragStart(
-                event,
-                "Laptop",
-                "💻"
-              )
+              handleDragStart(event, "Laptop", "💻")
             }
           >
             💻 Laptop
@@ -761,11 +712,7 @@ function NetworkLab() {
           <button
             draggable="true"
             onDragStart={(event) =>
-              handleDragStart(
-                event,
-                "Switch",
-                "🔀"
-              )
+              handleDragStart(event, "Switch", "🔀")
             }
           >
             🔀 Switch
@@ -774,11 +721,7 @@ function NetworkLab() {
           <button
             draggable="true"
             onDragStart={(event) =>
-              handleDragStart(
-                event,
-                "Router",
-                "📡"
-              )
+              handleDragStart(event, "Router", "📡")
             }
           >
             📡 Router
@@ -787,11 +730,7 @@ function NetworkLab() {
           <button
             draggable="true"
             onDragStart={(event) =>
-              handleDragStart(
-                event,
-                "Server",
-                "🖥️"
-              )
+              handleDragStart(event, "Server", "🖥️")
             }
           >
             🖥️ Server
@@ -800,11 +739,7 @@ function NetworkLab() {
           <button
             draggable="true"
             onDragStart={(event) =>
-              handleDragStart(
-                event,
-                "Printer",
-                "🖨️"
-              )
+              handleDragStart(event, "Printer", "🖨️")
             }
           >
             🖨️ Printer
@@ -820,9 +755,7 @@ function NetworkLab() {
         <div className="network-actions">
           <button
             className="check-button"
-            onClick={
-              handleCheckNetwork
-            }
+            onClick={handleCheckNetwork}
           >
             🔍 Check Network
           </button>
@@ -859,101 +792,67 @@ function NetworkLab() {
             </>
           ) : (
             <>
-              <svg
-                className="connection-layer"
-              >
-                {connections.map(
-                  (
-                    connection,
-                    index
-                  ) => {
-                    const from =
-                      getDeviceById(
-                        connection.from
-                      );
+              <svg className="connection-layer">
+                {connections.map((connection, index) => {
+                  const from = getDeviceById(
+                    connection.from
+                  );
 
-                    const to =
-                      getDeviceById(
-                        connection.to
-                      );
+                  const to = getDeviceById(
+                    connection.to
+                  );
 
-                    if (!from || !to) {
-                      return null;
-                    }
-
-                    return (
-                      <line
-                        key={index}
-                        x1={from.x}
-                        y1={from.y}
-                        x2={to.x}
-                        y2={to.y}
-                      />
-                    );
+                  if (!from || !to) {
+                    return null;
                   }
-                )}
+
+                  return (
+                    <line
+                      key={index}
+                      x1={from.x}
+                      y1={from.y}
+                      x2={to.x}
+                      y2={to.y}
+                    />
+                  );
+                })}
               </svg>
 
               <div className="placed-devices">
-                {devices.map(
-                  (
-                    device,
-                    index
-                  ) => (
-                    <div
-                      className={`placed-device ${
-                        selectedDeviceId ===
-                        device.id
-                          ? "selected-device"
-                          : ""
-                      }`}
-                      key={device.id}
-                      style={{
-                        left: `${device.x}px`,
-                        top: `${device.y}px`,
-                      }}
-                      onClick={(event) =>
-                        handleDeviceClick(
-                          event,
-                          device.id
-                        )
-                      }
-                      onPointerDown={(
-                        event
-                      ) =>
-                        handleDevicePointerDown(
-                          event,
-                          index
-                        )
-                      }
-                      onPointerMove={
-                        handleDevicePointerMove
-                      }
-                      onPointerUp={
-                        handleDevicePointerUp
-                      }
-                      onPointerCancel={
-                        handleDevicePointerUp
-                      }
-                      onContextMenu={(
-                        event
-                      ) =>
-                        handleDeviceContextMenu(
-                          event,
-                          device.id
-                        )
-                      }
-                    >
-                      <div className="device-icon">
-                        {device.icon}
-                      </div>
-
-                      <span>
-                        {device.type}
-                      </span>
+                {devices.map((device, index) => (
+                  <div
+                    className={`placed-device ${
+                      selectedDeviceId === device.id
+                        ? "selected-device"
+                        : ""
+                    }`}
+                    key={device.id}
+                    style={{
+                      left: `${device.x}px`,
+                      top: `${device.y}px`,
+                    }}
+                    onClick={(event) =>
+                      handleDeviceClick(event, device.id)
+                    }
+                    onPointerDown={(event) =>
+                      handleDevicePointerDown(event, index)
+                    }
+                    onPointerMove={handleDevicePointerMove}
+                    onPointerUp={handleDevicePointerUp}
+                    onPointerCancel={handleDevicePointerUp}
+                    onContextMenu={(event) =>
+                      handleDeviceContextMenu(event, device.id)
+                    }
+                  >
+                    <div className="device-icon">
+                      {device.icon}
                     </div>
-                  )
-                )}
+
+                    <span>
+                      {device.type}
+                    </span>
+                  </div>
+                ))}
               </div>
             </>
           )}
@@ -973,6 +872,16 @@ function NetworkLab() {
           >
             Next Material →
           </Link>
+
+          {/* Tombol kuis hanya muncul setelah simulasi berhasil */}
+          {labCompleted && (
+            <Link
+              to="/topology-quiz"
+              className="network-next-button"
+            >
+              Kerjakan Kuis Topologi →
+            </Link>
+          )}
         </div>
       </div>
     </div>
